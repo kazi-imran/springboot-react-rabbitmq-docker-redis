@@ -33,14 +33,15 @@
     "babel-preset-stage-1": "^6.5.0",
     "history": "^2.0.0",
     "lodash": "^4.5.1",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
+    "react": "^15.3.1",
+    "react-dom": "^15.3.1",
     "react-redux": "^4.4.0",
-    "react-router": "^2.0.0",
+    "react-router": "2.0.0",
     "react-router-bootstrap": "^0.23.0",
-    "react-router-redux": "^4.0.4",
+    "react-router-dom": "4.0.0",
     "redux": "^3.3.1",
-    "redux-simple-router": "^2.0.4",
+    "redux-form": "6.6.3",
+    "redux-promise": "^0.5.3",
     "redux-thunk": "^2.0.1"
   }
 }
