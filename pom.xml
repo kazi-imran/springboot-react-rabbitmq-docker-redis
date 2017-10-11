@@ -15,7 +15,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.7.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
@@ -36,13 +36,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
-<!-- 			<exclusions> -->
-<!-- 				<exclusion> -->
-<!-- 					We use HikariCP instead -->
-<!-- 					<groupId>org.apache.tomcat</groupId> -->
-<!-- 					<artifactId>tomcat-jdbc</artifactId> -->
-<!-- 				</exclusion> -->
-<!-- 			</exclusions> -->
+			<!-- <exclusions> -->
+			<!-- <exclusion> -->
+			<!-- We use HikariCP instead -->
+			<!-- <groupId>org.apache.tomcat</groupId> -->
+			<!-- <artifactId>tomcat-jdbc</artifactId> -->
+			<!-- </exclusion> -->
+			<!-- </exclusions> -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,21 +57,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency> -->
+		<!-- <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-starter-security</artifactId> 
+			</dependency> -->
 		<!-- Database -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
-		<!-- <dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-		</dependency> -->
+
+		<!-- <dependency> <groupId>com.zaxxer</groupId> <artifactId>HikariCP</artifactId> 
+			</dependency> -->
 		<!-- Other -->
 		<dependency>
 			<groupId>ma.glasnost.orika</groupId>
@@ -89,10 +85,13 @@
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj-core.version}</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-		</dependency> -->
+		<dependency>
+			<groupId>net.andreinc.mockneat</groupId>
+			<artifactId>mockneat</artifactId>
+			<version>0.1.2</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-jpamodelgen</artifactId> 
+			</dependency> -->
 	</dependencies>
 
 	<build>
@@ -119,7 +118,7 @@
 							<exclude>**/*_.class</exclude>
 						</excludes>
 					</instrumentation>
-					<check/>
+					<check />
 				</configuration>
 			</plugin>
 			<!-- Coveralls -->
@@ -174,6 +173,12 @@
 	</build>
 	<!-- Repositories only needed if using a milestone or snapshot -->
 	<repositories>
+
+		<repository>
+			<id>jcenter</id>
+			<url>https://jcenter.bintray.com/</url>
+		</repository>
+
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>

@@ -1,4 +1,4 @@
-package com.myecommerce.user;
+package com.myecommerce.customer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,18 +8,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class UserController {
+public class CustomerController {
 
 	private final Log log = LogFactory.getLog(getClass());
-	private final UserService userService;
+	private final CustomerService userService;
 
 	@Autowired
-	public UserController(UserService userService) {
+	public CustomerController(CustomerService userService) {
 		this.userService=userService;
 
 	}
 
-	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@RequestMapping(value = "/customers", method = RequestMethod.GET)
 	public void getUsers() {
 		log.info("getUsers");
 		userService.fetchUsersFromRandomUsersAPI();

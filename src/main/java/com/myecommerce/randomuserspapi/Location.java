@@ -19,7 +19,7 @@ public class Location implements Serializable {
 	@JsonProperty("state")
 	private String state;
 	@JsonProperty("postcode")
-	private int postcode;
+	private String postcode;
 	private final static long serialVersionUID = -8175398837569431902L;
 
 	/**
@@ -36,7 +36,7 @@ public class Location implements Serializable {
 	 * @param postcode
 	 * @param city
 	 */
-	public Location(String street, String city, String state, int postcode) {
+	public Location(String street, String city, String state, String postcode) {
 		super();
 		this.street = street;
 		this.city = city;
@@ -75,12 +75,12 @@ public class Location implements Serializable {
 	}
 
 	@JsonProperty("postcode")
-	public int getPostcode() {
+	public String getPostcode() {
 		return postcode;
 	}
 
 	@JsonProperty("postcode")
-	public void setPostcode(int postcode) {
+	public void setPostcode(String postcode) {
 		this.postcode = postcode;
 	}
 
