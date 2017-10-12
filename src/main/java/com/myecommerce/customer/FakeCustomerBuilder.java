@@ -29,7 +29,7 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		Customer customer = new Customer();
 		Account account = new Account(new UUIDs().supplier().get());
-		account.setCreditCards(CREDIT_CARD_SUPPLIER.get());
+	//	account.setCreditCards(CREDIT_CARD_SUPPLIER.get());
 
 		Optional<Location> location = Optional.ofNullable(result.getLocation());
 
@@ -45,7 +45,7 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		});
 
-		account.getAddresses().add(address);
+	//	account.getAddresses().add(address);
 
 		Optional<Name> name = Optional.ofNullable(result.getName());
 
