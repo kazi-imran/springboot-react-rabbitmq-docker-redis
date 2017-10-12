@@ -19,7 +19,7 @@ public class CustomerController {
 
 	}
 
-	@RequestMapping(value = "/customers", method = RequestMethod.GET)
+	@RequestMapping(value = "/fakecustomers", method = RequestMethod.GET)
 	public void getUsers() {
 		log.info("getUsers");
 		userService.fetchUsersFromRandomUsersAPI();

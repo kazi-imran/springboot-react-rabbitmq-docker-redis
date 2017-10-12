@@ -61,18 +61,18 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 		return customer;
 	}
 
-	private void generateCreditCardData() {
-		Map<Integer, CreditCardType> creditCardFactory = new HashMap<>();
-		creditCardFactory.put(1, CreditCardType.AMERICAN_EXPRESS);
-		creditCardFactory.put(1, CreditCardType.MASTERCARD);
-		creditCardFactory.put(1, CreditCardType.MAESTRO_19);
-		creditCardFactory.put(1, CreditCardType.VISA_19);
-		creditCardFactory.put(1, CreditCardType.VISA_16);
-		MockNeat mockNeat = MockNeat.threadLocal();
-		int randNum = new Random().nextInt(5 - 1 + 1) + 1;
-		String creditCardNumber = mockNeat.creditCards().type(creditCardFactory.get(randNum)).val();
-		CreditCard creditCard = new CreditCard(creditCardNumber, creditCardFactory.get(randNum));
-
-	}
+//	private void generateCreditCardData() {
+//		Map<Integer, CreditCardType> creditCardFactory = new HashMap<>();
+//		creditCardFactory.put(1, CreditCardType.AMERICAN_EXPRESS);
+//		creditCardFactory.put(1, CreditCardType.MASTERCARD);
+//		creditCardFactory.put(1, CreditCardType.MAESTRO_19);
+//		creditCardFactory.put(1, CreditCardType.VISA_19);
+//		creditCardFactory.put(1, CreditCardType.VISA_16);
+//		MockNeat mockNeat = MockNeat.threadLocal();
+//		int randNum = new Random().nextInt(5 - 1 + 1) + 1;
+//		String creditCardNumber = mockNeat.creditCards().type(creditCardFactory.get(randNum)).val();
+//		CreditCard creditCard = new CreditCard(creditCardNumber, creditCardFactory.get(randNum));
+//
+//	}
 
 }

@@ -7,7 +7,7 @@ import promise from 'redux-promise';
 
 
 import reducers from './reducers';
-import UserIndex from './components/users_index';
+import CustomerIndex from './components/customers_index';
 // import PostsNew from './components/posts_new'
 // import PostsShow from './components/posts_show';
 
@@ -24,7 +24,7 @@ ReactDOM.render(
     <Route path="/posts/:id" component={PostsShow}/>
     */
   }
-    <Route path="/" component={UserIndex}/>
+    <Route path="/" component={CustomerIndex}/>
     </Switch>
 
     </div>

@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
-import UsersReducer from './reducer_users';
+import CustomersReducer from './reducer_users';
 
 const rootReducer = combineReducers({
 
-  users:UsersReducer,
+  customers:CustomersReducer,
   form:formReducer
 
 });
