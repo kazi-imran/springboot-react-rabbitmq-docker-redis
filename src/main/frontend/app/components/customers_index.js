@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCustomers } from "../actions/index";
+import CustomerList from "./CustomerList";
 const client = require('../jsfiles/client');
 const follow = require('../jsfiles/follow');
 
@@ -23,51 +24,45 @@ class CustomerIndex extends Component {
   }
 
   componentDidMount() {
-//    this.props.fetchCustomers(this.state.pageSize);
-//
-const ROOT_URL='customers/?size=1';
-      const request=follow(client, ROOT_URL, [
-      {
-        rel: 'customers',
-        params: {
-          'size': this.state.pageSize
-        }
-      }
-    ]).then(customerCollection => {
-      console.log("customerCollection",customerCollection);
-       return client({
-        method: 'GET',
-        path: customerCollection.entity._links.profile.href,
-        headers: {
-          'Accept': 'application/schema+json'
-        }
-      }).then(schema => {
-        console.log("schema",schema);
-        this.schema = schema.entity;
-        console.log(schema);
-        return customerCollection;
-      });
-    }).done(customerCollection => {
-          console.log("schema",customerCollection);
-       this.setState({
-       employees: customerCollection.entity._embedded.employees,
-         attributes: Object.keys(this.schema.properties),
-       pageSize: pageSize,
-         links: customerCollection.entity._links
-       });
-     });
+    this.props.fetchCustomers(this.state.pageSize);
 }
 
   render() {
-    console.log("Customers:", this.props.customers);
-    return <h1>List of Customers</h1>;
+    console.log("State---:", this.props);
+    if(_.isEmpty(this.props.customers))
+    {
+      return(
+      <div>
+      <h5>Loading...</h5>
+      </div>
+    );
+    }
+    else{
+      // var str = JSON.stringify(this.props.customers[0], null, 2)
+      // console.log(str);
+    return (
+
+      <div>
+
+      <h1>List of Customers</h1>
+
+      <CustomerList customers={this.props.customers[0].customers}/>
+
+
+
+      </div>
+        );
+      }
+
+
   }
 }
 
-function mapStateToProps(state) {
-  console.log("state", state);
+function mapStateToProps({customers}) {
+  var str = JSON.stringify(customers, null, 2)
+  console.log(str);
   return {
-    customers: state.customers
+    customers: customers
   };
 }
 
