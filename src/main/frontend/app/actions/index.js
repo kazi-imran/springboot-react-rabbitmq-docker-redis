@@ -35,7 +35,7 @@ export function fetchCustomers(pageSize)
         return  {
             customers: customerCollection.entity._embedded.customers,
             attributes: Object.keys(schema.entity.properties),
-            pageSize: pageSize,
+            page: customerCollection.entity.page,
             links: customerCollection.entity._links
 
           }
