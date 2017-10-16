@@ -1,15 +1,21 @@
 import _ from 'lodash';
-import {FETCH_CUSTOMERS} from '../actions/index';
+import {FETCH_CUSTOMERS,FETCH_CUSTOMER_DETAILS} from '../actions/index';
 
 export default function(state={},action)
 {
 switch (action.type) {
   case FETCH_CUSTOMERS:
-      console.log("Inside Reducers",action.payload);
-      //return _.mapKeys(action.payload.data.results, 'email');
+      
       return [action.payload,...state];
 
     break;
+    case FETCH_CUSTOMER_DETAILS:
+      var str = JSON.stringify(action.payload, null, 2);
+      console.log(str);
+    
+    return [action.payload,...state];
+
+  break;  
   default:
     return state;
 

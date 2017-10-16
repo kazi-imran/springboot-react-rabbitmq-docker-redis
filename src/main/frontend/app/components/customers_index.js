@@ -18,7 +18,7 @@ class CustomerIndex extends Component {
     };
      this.onNavigate = this.onNavigate.bind(this);
     this.updatePageSize = this.updatePageSize.bind(this);
-this.onDelete = this.onDelete.bind(this);
+    this.onDelete = this.onDelete.bind(this);
 
         // this.onCreate = this.onCreate.bind(this);
 

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Panel, PageHeader, Table, Button,Glyphicon} from "react-bootstrap";
 import Customer from "./customer";
+import {Link} from 'react-router-dom';
 
 
 class CustomerList extends React.Component {
@@ -39,11 +40,11 @@ handleNavLast(e) {
     var props = this.props;
     console.log("props", props);
     const customers =this.props.customers.map( customer =>
-        <Customer
-          key={customer._links.self.href}
-          customer={customer}
-        />
-      );
+      <Customer
+        key={customer.id}
+        customer={customer}
+      />
+    );
       console.log("customers",customers);
       var navLinks = [];
       console.log(this.props.links);

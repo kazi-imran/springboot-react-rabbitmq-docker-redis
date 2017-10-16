@@ -19,14 +19,14 @@ const common = {
     module: {
         loaders: [{
             exclude: /node_modules/,
-            loader: 'babel'
+            loader: 'babel-loader'
         }, {
             test: /\.css$/,
             loader: 'style!css'
         }]
     },
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['*', '.js', '.jsx']
     }
 };
 
@@ -38,11 +38,18 @@ if (TARGET === 'start' || !TARGET) {
                 '/': {
                     target: 'http://localhost:8080',
                     secure: false,
-                    prependPath: false
+                    prependPath: false,
+                    "changeOrigin": true,
+                    "secure": false
                 }
             },
             publicPath: 'http://localhost:9090/',
-            historyApiFallback: true
+            historyApiFallback: true,
+            headers: {
+                "Access-Control-Allow-Origin": "http://localhost:9090", "Access-Control-Allow-Credentials": "true",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+              }
         },
         devtool: 'source-map'
     });

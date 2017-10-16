@@ -3,6 +3,7 @@ const client = require('../jsfiles/client');
 const follow = require('../jsfiles/follow');
 
 export const FETCH_CUSTOMERS='fetch_customers';
+export const FETCH_CUSTOMER_DETAILS='fetch_customer_details';
 
 //const ROOT_URL='https://randomuser.me/api/?inc=gender,name,nat';
 
@@ -76,4 +77,33 @@ return{
   payload:result
 };
 
+}
+
+export function fetchCustomerDetails(id)
+{
+
+  const ROOT_URL=`http://localhost:8080/api/customers/${id}`;
+  //const request=axios.get(selfLink);
+  
+
+  const request=client({method:'GET',path:ROOT_URL,
+  headers: {
+    'Accept': 'application/hal+json'
+    
+  }
+})
+  .then(customerDetails=>{
+    console.log("client----",customerDetails);
+    return {
+      customers: customerDetails.entity,     
+      links: customerDetails.entity._links
+    };
+  
+});
+
+console.log("fetchCustomerDetails result",request);
+  return{
+    type:FETCH_CUSTOMER_DETAILS,
+    payload:request
+  };
 }
