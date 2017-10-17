@@ -30,14 +30,12 @@ class CustomerDetails extends Component{
         return warnings
       }
       
-     renderField({
-        field
-      }) {
+     renderField({ input, label, type, meta: { touched, error } }) {
         return(
         <div  className = "form-group">
-        <label>{field.label}</label>
+        <label>{label}</label>
         <div>
-          <input {...field.input}  className="form-control" placeholder={field.label} type={type} />
+          <input {...input}  className="form-control" placeholder={label} type={type} />
           {/* {touched &&
             ((error && <span>{error}</span>) ||
               (warning && <span>{warning}</span>))} */}
@@ -65,12 +63,11 @@ class CustomerDetails extends Component{
            
             return (
                 <form onSubmit={handleSubmit}>
-                <div >
-                <label>First Name</label> 
+                <div >                
                 <Field 
                     name="customers.firstName"
                     type="text"
-                    component="input"
+                    component={this.renderField}
                     label="FirstName"
                   //  value={initialValues.firstName}
                  //   validate={[required, maxLength15, minLength2]}
@@ -91,6 +88,7 @@ class CustomerDetails extends Component{
 }
 
 function mapStateToProps({ customers}) {
+    console.log("mapStateToProps",customers);
     if(Array.isArray(customers))
     {
         initialValue=customers[0];

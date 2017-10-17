@@ -8,25 +8,80 @@ const client = require("../jsfiles/client");
 const follow = require("../jsfiles/follow");
 
 class CustomerIndex extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
-      customers: [],
+      customers: {},
       attributes: [],
       pageSize: 2,
-      links: {}
-    };
+      links: {},
+      doFetchData:false,
+      doReload:props.doReload
+      
+    }
      this.onNavigate = this.onNavigate.bind(this);
     this.updatePageSize = this.updatePageSize.bind(this);
     this.onDelete = this.onDelete.bind(this);
+    console.log("Inside Constructor");
+    
+    
+    //this.props.fetchCustomers(this.state.pageSize);
 
         // this.onCreate = this.onCreate.bind(this);
 
   }
 
+  
   componentDidMount() {
+    console.log("Inside CcomponentDidMount",this.state);
+    
     this.props.fetchCustomers(this.state.pageSize);
+    this.setState({doFetchData:false});
+    
+    
   }
+  componentDidUpdate()
+  {
+  console.log("Inside componentDidUpdate");
+  //this.props.fetchCustomers(this.state.pageSize);
+
+  }
+  componentWillMount()
+  {
+    console.log("Inside componentWillMount");
+    if(this.state.doFetchData)
+    {
+      //this.props.fetchCustomers(this.state.pageSize);
+   
+    }
+    
+  }
+  componentWillUpdate()
+  {
+    console.log("Inside componentWillUpdate");
+   // this.props.fetchCustomers(this.state.pageSize);
+  }
+  componentWillReceiveProps(nextProps)
+  {
+    
+    // console.log("Inside componentWillReceiveProps");
+    
+    // if(this.state.doFetchData)
+    // {
+    //   this.props.fetchCustomers(this.state.pageSize);
+    // }
+    //this.setState({doFetchData:true});
+    //  if(nextProps!= this.props)
+    //  {
+    //   this.componentDidMount(); 
+    //  }
+    
+    
+  }
+   
+
+  
   onNavigate(navLink){
     client({method:'GET',path:navLink}).done(customerCollection=>{
       this.setState({
@@ -52,7 +107,8 @@ onDelete(employee)
   	}
   }
   render() {
-    console.log("State---:", this.props);
+  //  this.props.fetchCustomers(this.state.pageSize);
+    console.log("State---:", this.state);
     if (_.isEmpty(this.props.customers)) {
       return (
         <div>
@@ -62,31 +118,56 @@ onDelete(employee)
     } else {
       // var str = JSON.stringify(this.props.customers[0], null, 2)
       // console.log(str);
-      return (
+      if(Array.isArray(this.props.customers))
+      {
+        console.log("I am  an array");
+        return (
+            
+          <div>
+            <h1 />
+  
+            <CustomerList
+              customers={this.props.customers[0].customers}
+              attributes={this.props.customers[0].attributes}
+              links={this.props.customers[0].links}
+              page={this.props.customers[0].page}
+              onNavigate={this.onNavigate}
+              onDelete={this.onDelete}
+              updatePageSize={this.updatePageSize}
+              pageSize={this.props.pageSize}
+            />
+          </div>
+        );
+      }
+      else{
+        console.log("I am not an array");
+        return(
         <div>
-          <h1 />
+        <h1 />
+        <CustomerList
+        customers={this.props.customers.customers}
+        attributes={this.props.customers.attributes}
+        links={this.props.customers.links}
+        page={this.props.customers.page}
+        onNavigate={this.onNavigate}
+        onDelete={this.onDelete}
+        updatePageSize={this.updatePageSize}
+        pageSize={this.props.pageSize}
+      />
+      </div>
+        );
 
-          <CustomerList
-            customers={this.props.customers[0].customers}
-            attributes={this.props.customers[0].attributes}
-            links={this.props.customers[0].links}
-            page={this.props.customers[0].page}
-            onNavigate={this.onNavigate}
-            onDelete={this.onDelete}
-				    updatePageSize={this.updatePageSize}
-            pageSize={this.props.pageSize}
-          />
-        </div>
-      );
+      }
+      
     }
   }
 }
 
-function mapStateToProps({ customers }) {
-  var str = JSON.stringify(customers, null, 2);
-  //  console.log(str);
+function mapStateToProps(state) {
+  var str = JSON.stringify(state, null, 2);
+  console.log("inside customerindex mapStatetoProps",str);
   return {
-    customers: customers
+    customers: state.customers
   };
 }
 
