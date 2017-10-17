@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchCustomerDetails} from '../actions/index';
 import {Link} from 'react-router-dom';
+import { Panel, PageHeader, Table, Button,Glyphicon} from "react-bootstrap";
 import _ from "lodash";
 
 import {Field, reduxForm,formValueSelector } from 'redux-form';
@@ -11,11 +12,16 @@ class CustomerDetails extends Component{
     constructor(props)
     {
         super(props);
+        this.state = {
+            isDisabled:props.isDisabled
+        }
+        
         
 
     }
     componentDidMount() {
         const {id} = this.props.match.params;
+        console.log("Inside componentDidMount");
         console.log(this.props);
         this.props.fetchCustomerDetails(parseInt(id));  
     
@@ -30,12 +36,15 @@ class CustomerDetails extends Component{
         return warnings
       }
       
-     renderField({ input, label, type, meta: { touched, error } }) {
+      //{ input, label, type, meta: { touched, error } }
+     renderField(field) {
+         console.log("renderfield props",field)
         return(
         <div  className = "form-group">
-        <label>{label}</label>
+        <label>{field.label}</label>
         <div>
-          <input {...input}  className="form-control" placeholder={label} type={type} />
+          <input {...field.input} disabled={field.disabled} className="form-control" placeholder={field.label} type={field.type} />
+             
           {/* {touched &&
             ((error && <span>{error}</span>) ||
               (warning && <span>{warning}</span>))} */}
@@ -50,32 +59,73 @@ class CustomerDetails extends Component{
         const {initialValues}=this.props;
         const { handleSubmit, pristine, reset, submitting } = this.props;
          var props = JSON.stringify(initialValues, null, 2);
+        
     
-        console.log("props",this.props);
+     //   console.log("props",this.props);
        // if(!initialValues && isEmpty(initialValues) && !_.has(initialValues, 'customers'))
-       if(_.isEmpty(initialValues))
-        {
+    //    if(_.isEmpty(initialValues))
+    //     {
 
-            return <div>Loading Customer details...</div>
-        }
+    //         return <div>Loading Customer details...</div>
+    //     }
 
 
            
             return (
                 <form onSubmit={handleSubmit}>
-                <div >                
+                <div > 
+                <PageHeader>Customer Profile <small>Id :{this.props.customerid}</small></PageHeader>                   
                 <Field 
-                    name="customers.firstName"
+                    name="customer.firstName"
                     type="text"
                     component={this.renderField}
-                    label="FirstName"
+                    label="First Name"
+                    props={{ disabled: this.state.isDisabled }}
                   //  value={initialValues.firstName}
                  //   validate={[required, maxLength15, minLength2]}
                   //  warn={alphaNumeric}
                   />
-                    </div>
-                
-                  </form>
+                  <Field 
+                    name="customer.lastName"
+                    type="text"
+                    component={this.renderField}
+                    label="Last Name"
+                    props={{ disabled: this.state.isDisabled }}                
+                  />
+                  <Field 
+                    name="customer.email"
+                    type="text"
+                    component={this.renderField}     
+                    label="Email"
+                    props={{ disabled: this.state.isDisabled }}                           
+                  />                  
+                </div>
+                <div className = "form-check">
+        <label className = "form-check">Sex</label>
+        <div  >
+          <label className = "form-check-label">
+            <Field
+              name="customer.gender"
+              component="input"
+              type="radio"
+              value="male"
+              props={{ disabled: this.state.isDisabled }}   
+            />{' '}
+            Male
+          </label>
+          <label className = "form-check-label">
+            <Field
+              name="customer.gender"
+              component="input"
+              type="radio"
+              value="female"
+              props={{ disabled: this.state.isDisabled }}   
+            />{' '}
+            Female
+          </label>
+        </div>
+        </div>  
+            </form>
             );
         
 
@@ -91,12 +141,12 @@ function mapStateToProps({ customers}) {
     console.log("mapStateToProps",customers);
     if(Array.isArray(customers))
     {
-        initialValue=customers[0];
+       return customers[0];
     }
     
-    return {
-        initialValue:customers
-    };
+    return 
+        return customers
+    ;
     
   
   }
@@ -110,11 +160,12 @@ function mapStateToProps({ customers}) {
 // You have to connect() to any reducers that you wish to connect to yourself
 CustomerDetails = connect(
     
+    
     state => ({
         
-            initialValues: Array.isArray(state.customers)?state.customers[0]:state.customers
-        
-
+            //Array.isArray(state.customers)?state.customers[0]:state.customers       
+            initialValues: state.customers,              
+            customerid:!_.isEmpty(state.customers.customer)?state.customers.customer.id:1
         }
          // pull initial values from account reducer
     ),

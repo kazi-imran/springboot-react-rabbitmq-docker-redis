@@ -12,7 +12,7 @@ class CustomerIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      customers: {},
+      customers: [],
       attributes: [],
       pageSize: 2,
       links: {},
@@ -26,7 +26,7 @@ class CustomerIndex extends Component {
     console.log("Inside Constructor");
     
     
-    //this.props.fetchCustomers(this.state.pageSize);
+   // this.props.fetchCustomers(this.state.pageSize);
 
         // this.onCreate = this.onCreate.bind(this);
 
@@ -37,7 +37,7 @@ class CustomerIndex extends Component {
     console.log("Inside CcomponentDidMount",this.state);
     
     this.props.fetchCustomers(this.state.pageSize);
-    this.setState({doFetchData:false});
+    this.setState({doReload:false});
     
     
   }
@@ -50,11 +50,11 @@ class CustomerIndex extends Component {
   componentWillMount()
   {
     console.log("Inside componentWillMount");
-    if(this.state.doFetchData)
-    {
-      //this.props.fetchCustomers(this.state.pageSize);
-   
-    }
+    // if(this.state.doReload)
+    // {
+    //   this.props.fetchCustomers(this.state.pageSize);
+    //   this.setState({doReload:false});
+    // }
     
   }
   componentWillUpdate()
@@ -65,11 +65,12 @@ class CustomerIndex extends Component {
   componentWillReceiveProps(nextProps)
   {
     
-    // console.log("Inside componentWillReceiveProps");
+     console.log("Inside componentWillReceiveProps");
     
-    // if(this.state.doFetchData)
+    // if(this.state.doReload)
     // {
     //   this.props.fetchCustomers(this.state.pageSize);
+    //   this.setState({doReload:false});
     // }
     //this.setState({doFetchData:true});
     //  if(nextProps!= this.props)
@@ -108,38 +109,49 @@ onDelete(employee)
   }
   render() {
   //  this.props.fetchCustomers(this.state.pageSize);
-    console.log("State---:", this.state);
-    if (_.isEmpty(this.props.customers)) {
+    console.log("Props---:", this.props);
+    // && !Array.isArray(this.props.customers.customers)
+    if (_.isEmpty(this.props.customers.customers)) {
       return (
         <div>
           <h5>Loading...</h5>
         </div>
       );
-    } else {
+    } 
+    else if(!Array.isArray(this.props.customers.customers))
+    {
+      return (
+        <div>
+          <h5>Loading...</h5>
+        </div>
+      );
+    }    
+
+    else {
       // var str = JSON.stringify(this.props.customers[0], null, 2)
       // console.log(str);
-      if(Array.isArray(this.props.customers))
-      {
-        console.log("I am  an array");
-        return (
+      // if(Array.isArray(this.props.customers))
+      // {
+        // console.log("I am  an array");
+        // return (
             
-          <div>
-            <h1 />
+        //   <div>
+        //     <h1 />
   
-            <CustomerList
-              customers={this.props.customers[0].customers}
-              attributes={this.props.customers[0].attributes}
-              links={this.props.customers[0].links}
-              page={this.props.customers[0].page}
-              onNavigate={this.onNavigate}
-              onDelete={this.onDelete}
-              updatePageSize={this.updatePageSize}
-              pageSize={this.props.pageSize}
-            />
-          </div>
-        );
-      }
-      else{
+        //     <CustomerList
+        //       customers={this.props.customers[0].customers}
+        //       attributes={this.props.customers[0].attributes}
+        //       links={this.props.customers[0].links}
+        //       page={this.props.customers[0].page}
+        //       onNavigate={this.onNavigate}
+        //       onDelete={this.onDelete}
+        //       updatePageSize={this.updatePageSize}
+        //       pageSize={this.props.pageSize}
+        //     />
+        //   </div>
+        // );
+      // }
+      // else{
         console.log("I am not an array");
         return(
         <div>
@@ -160,7 +172,7 @@ onDelete(employee)
       }
       
     }
-  }
+ // }
 }
 
 function mapStateToProps(state) {

@@ -22,7 +22,9 @@ const AddPropsToRoute = (WrappedComponent, passedProps)=>{
 export const CustomersNavi = () => (
 
     <Switch>
-      <Route path='/customers/' component={AddPropsToRoute(CustomerIndex,{doReload:true})}/>
-      <Route path='/customers/:id'  component={AddPropsToRoute(CustomerDetails,{doReload:true})}/>
+      <Route exact path='/customers/' component={AddPropsToRoute(CustomerIndex,{doReload:true})}/> 
+      <Route path='/customers/:id'  component={AddPropsToRoute(CustomerDetails,{isDisabled:true})}/>  
+      
+      
     </Switch>
   )

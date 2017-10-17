@@ -95,7 +95,7 @@ export function fetchCustomerDetails(id)
   .then(customerDetails=>{
     console.log("client----",customerDetails);
     return {
-      customers: customerDetails.entity,     
+      customer: customerDetails.entity,     
       links: customerDetails.entity._links
     };
   

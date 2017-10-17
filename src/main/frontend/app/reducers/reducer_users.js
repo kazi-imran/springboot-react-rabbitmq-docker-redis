@@ -15,7 +15,7 @@ switch (action.type) {
       var str = JSON.stringify(action.payload, null, 2);
       console.log("FETCH_CUSTOMER_DETAILS",str);
     
-     return [action.payload,...state];
+     return action.payload;
 
   break;  
   default:
