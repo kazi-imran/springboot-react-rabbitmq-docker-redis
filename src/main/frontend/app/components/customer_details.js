@@ -40,9 +40,9 @@ class CustomerDetails extends Component{
      renderField(field) {
          console.log("renderfield props",field)
         return(
-        <div  className = "form-group">
-        <label>{field.label}</label>
-        <div>
+        <div  className = "form-group row">
+        <label className="col-sm-2 col-form-label">{field.label}</label>
+        <div className="col-sm-10">
           <input {...field.input} disabled={field.disabled} className="form-control" placeholder={field.label} type={field.type} />
              
           {/* {touched &&
@@ -72,8 +72,9 @@ class CustomerDetails extends Component{
 
            
             return (
+              <div className="container">
                 <form onSubmit={handleSubmit}>
-                <div > 
+                
                 <PageHeader>Customer Profile <small>Id :{this.props.customerid}</small></PageHeader>                   
                 <Field 
                     name="customer.firstName"
@@ -99,33 +100,60 @@ class CustomerDetails extends Component{
                     label="Email"
                     props={{ disabled: this.state.isDisabled }}                           
                   />                  
+                   
+                    
+                    <div className="form-group ">
+                    <div className="row align-items-start">
+                   
+                    <label className = "col-form-legend col-sm-2">Sex</label>
+                    <div className="col-md-2">
+                    <div className="form-check">
+                    <label className = "form-check-label">
+                    
+                    <Field
+                      name="customer.gender"
+                      component="input"
+                      type="radio"
+                      value="male"
+                      //className="form-check-input"
+                      props={{ disabled: this.state.isDisabled }}   
+                    />{' '}
+                    Male
+                    
+                      
+                    </label>
+                    </div>  
+
+                    <div className="form-check">
+                      <label className = "form-check-label">
+                    <Field
+                      name="customer.gender"
+                      component="input"
+                      type="radio"
+                      value="female"
+                      className="form-check-input"
+                      props={{ disabled: this.state.isDisabled }}   
+                    />{' '}
+                    Female
+                    </label>
+                    </div>
+                    
+
+                    </div>  
+                    <div className="col-md-3">
+                     I am here
+                     </div>
+                     <div className="col-md-3">
+                     I am here !!!
+                     </div>
+                     <div className="col-md-2">
+                     Go here !!!
+                     </div>
+                   </div>  
+                   
+                   </div>
+                </form>
                 </div>
-                <div className = "form-check">
-        <label className = "form-check">Sex</label>
-        <div  >
-          <label className = "form-check-label">
-            <Field
-              name="customer.gender"
-              component="input"
-              type="radio"
-              value="male"
-              props={{ disabled: this.state.isDisabled }}   
-            />{' '}
-            Male
-          </label>
-          <label className = "form-check-label">
-            <Field
-              name="customer.gender"
-              component="input"
-              type="radio"
-              value="female"
-              props={{ disabled: this.state.isDisabled }}   
-            />{' '}
-            Female
-          </label>
-        </div>
-        </div>  
-            </form>
             );
         
 

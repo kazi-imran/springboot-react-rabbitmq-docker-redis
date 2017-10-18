@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myecommerce.account.Account;
 import com.myecommerce.data.BaseEntity;
 
@@ -33,6 +34,13 @@ public class Customer extends BaseEntity {
  private String email;
  
  private String gender;
+ 
+ @JsonProperty("large")
+ private String largePictureLink;
+ @JsonProperty("medium")
+ private String mediumPictureLink;
+ @JsonProperty("thumbnail")
+ private String thumbnailLink;
 
  @OneToOne(cascade = CascadeType.ALL)
  private Account account;

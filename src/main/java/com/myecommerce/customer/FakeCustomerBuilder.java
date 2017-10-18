@@ -1,22 +1,17 @@
 package com.myecommerce.customer;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Random;
 import java.util.function.Function;
 
 import com.myecommerce.account.Account;
 import com.myecommerce.address.Address;
 import com.myecommerce.address.AddressType;
-import com.myecommerce.creditcard.CreditCard;
 import com.myecommerce.creditcard.CreditCardSupplier;
 import com.myecommerce.randomuserspapi.Location;
 import com.myecommerce.randomuserspapi.Name;
+import com.myecommerce.randomuserspapi.Picture;
 import com.myecommerce.randomuserspapi.Result;
 
-import net.andreinc.mockneat.MockNeat;
-import net.andreinc.mockneat.types.enums.CreditCardType;
 import net.andreinc.mockneat.unit.id.UUIDs;
 
 
@@ -29,9 +24,13 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		Customer customer = new Customer();
 		Account account = new Account(new UUIDs().supplier().get());
+		Optional<Name> name = Optional.ofNullable(result.getName());
+		Optional<Location> location = Optional.ofNullable(result.getLocation());
+		Optional<Picture> picture = Optional.ofNullable(result.getPicture());
+		
 		account.setCreditCards(CREDIT_CARD_SUPPLIER.get());
 
-		Optional<Location> location = Optional.ofNullable(result.getLocation());
+		
 
 		final Address address = new Address();
 		location.ifPresent(l -> {
@@ -45,9 +44,7 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		});
 
-		account.getAddresses().add(address);
-
-		Optional<Name> name = Optional.ofNullable(result.getName());
+		account.getAddresses().add(address);	
 
 		name.ifPresent(n -> {
 			customer.setFirstName(n.getFirst());
@@ -57,6 +54,13 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		});
 		customer.setAccount(account);
+		
+		picture.ifPresent(p->{
+			customer.setLargePictureLink(p.getLarge());
+			customer.setMediumPictureLink(p.getMedium());
+			customer.setThumbnailLink(p.getThumbnail());
+			
+		});
 
 		return customer;
 	}
