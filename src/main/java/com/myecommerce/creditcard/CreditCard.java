@@ -6,7 +6,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
+import com.myecommerce.account.Account;
 import com.myecommerce.data.BaseEntity;
 
 import lombok.AllArgsConstructor;
@@ -26,6 +29,10 @@ public class CreditCard extends BaseEntity {
  private Long id;
 
  private String number;
+ 
+ @OneToOne
+ @JoinColumn(name="account_id")
+ private Account account;
 
  @Enumerated(EnumType.STRING)
  private net.andreinc.mockneat.types.enums.CreditCardType type;

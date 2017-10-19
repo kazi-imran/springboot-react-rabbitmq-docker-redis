@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerDetails} from '../actions/index';
+import {fetchCustomerDetails,fetchAddressDetails} from '../actions/index';
 import {Link} from 'react-router-dom';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
 import MetaInfoDisplay from './stateless/meta_info_display';
+import AddressForm from './forms/address_form';
+
 import _ from "lodash";
 
 import {Field, reduxForm, formValueSelector} from 'redux-form';
@@ -18,7 +20,7 @@ class CustomerDetails extends Component {
       basicPanelOpen: true
 
     }
-
+ 
   }
   componentDidMount() {
     const {id} = this.props.match.params;
@@ -29,6 +31,7 @@ class CustomerDetails extends Component {
       .fetchCustomerDetails(parseInt(id));
 
   }
+ 
 
   warn(values) {
     const warnings = {}
@@ -82,11 +85,30 @@ class CustomerDetails extends Component {
       modifiedBy="admin"
       lastModificationTime={customerInfo.lastModified}/>)
   }
+
+  renderAddressPanel({accountLink})
+  {
+
+    
+
+     if(accountLink.length!=0)
+     {
+      var isEmpty=!_.isEmpty(accountLink);
+      console.log("isEmpty",isEmpty)
+      return (
+        <AddressForm accountLink={accountLink}/>
+        )
+     
+     }
+  
+  }
   render()
   {
     const {initialValues} = this.props;
+    const allprops = this.props;
+    console.log("customerdetails props",allprops);
     const {handleSubmit, pristine, reset, submitting} = this.props;
-    var props = JSON.stringify(initialValues, null, 2);
+    var props = JSON.stringify(allprops, null, 2);
     const imageLarge = this.props.large;
     const imageMedium = this.props.medium;
     const thumbnail = this.props.thumbnail;
@@ -200,11 +222,18 @@ class CustomerDetails extends Component {
                   </div>
                 </div>
               </div>
-
             </div>
           </Panel>
-
+       
         </form>
+      
+        {this.renderAddressPanel({accountLink:this.props.accountLink})}
+      
+
+                      
+        
+        
+        
       </div>
     );
 
@@ -250,11 +279,13 @@ CustomerDetails = connect(state => ({
     : "",
   customerInfo: !_.isEmpty(state.customers.customer)
     ? state.customers.customer
+    : "",
+  accountLink: !_.isEmpty(state.customers.customer)
+    ? state.customers.customer._links.account.href
     : ""
-
 }
 // pull initial values from account reducer
-), {fetchCustomerDetails} // bind account loading action creator
+), {fetchCustomerDetails,fetchAddressDetails} // bind account loading action creator
 )(CustomerDetails)
 
 export default CustomerDetails;

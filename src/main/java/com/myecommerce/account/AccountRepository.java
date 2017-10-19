@@ -1,4 +1,4 @@
-package com.myecommerce.address;
+package com.myecommerce.account;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +12,10 @@ import com.myecommerce.customer.Customer;
 
 
 
-@RepositoryRestResource(path = "/addresses")
+@RepositoryRestResource(path = "/accounts")
 @RestResource
-public interface AddressRepository extends PagingAndSortingRepository<Address, Long> {
+public interface AccountRepository extends PagingAndSortingRepository<Account, Long> {
 
-	List<Address> findById(Long id);
+	List<Account> findById(Long id);
 
 }

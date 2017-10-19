@@ -3,7 +3,8 @@ import {Field, reduxForm} from 'redux-form';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import MetaInfoDisplay from './ststateless/meta_info_display';
+import MetaInfoDisplay from '../stateless/meta_info_display';
+import {fetchAddressDetails} from '../../actions/index';
 
 class AddressForm extends Component {
 
@@ -11,7 +12,7 @@ class AddressForm extends Component {
     {
         super(props);
         this.state={
-            addresses=[]
+            accountLink:{}
         }
 
     }
@@ -27,7 +28,8 @@ class AddressForm extends Component {
     }
 
     renderField(field) {
-        console.log("renderfield props", field)
+      
+        
         return (
             <div className="form-group row">
                 <label className="col-sm-2 col-form-label">{field.label}</label>
@@ -46,17 +48,35 @@ class AddressForm extends Component {
 
     }
 
+    componentDidMount() {
+        const {accountLink} = this.props;
+        this.setState({accountLink : accountLink});
+        console.log("AccountLink", this.props);       
+       fetchAddressDetails(accountLink);
+       
+       
+        
+    }
+
+    
+
     render()
     {
+        const {initialValues} = this.props;
+        const {accountLink} = this.props;        
+
+        console.log("AccountLink", accountLink);
+        
+        const {handleSubmit, pristine, reset, submitting} = this.props;
         return (
             
-            <div className="container">
+            
             <form onSubmit={handleSubmit}>
     
             <Panel collapsible defaultExpanded header="Address Info" bsStyle="primary">
             </Panel>
             </form>
-        </div>
+        
             
         )
 
@@ -66,4 +86,25 @@ class AddressForm extends Component {
 
 }
 
+ function mapStateToProps(state) {
+    console.log("mapStateToProps in address form", state);
+    return{
+        addresses:state
+    }   
+  
+  }
+
+  AddressForm = reduxForm({
+    form: 'initializeAddressForm', // a unique identifier for this form
+    enableReinitialize: true
+  })(AddressForm)
+
+  AddressForm = connect(state => ({
+    initialValues: state.addresses,
+    addresses:state.addresses
+  }), {fetchAddressDetails} // bind account loading action creator
+)(AddressForm)  
+
+
 export default AddressForm;
+//export default connect(mapStateToProps, { fetchAddressDetails })(AddressForm);

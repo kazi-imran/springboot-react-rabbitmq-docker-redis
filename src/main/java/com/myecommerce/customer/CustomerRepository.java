@@ -9,7 +9,7 @@ import java.lang.Long;
 import com.myecommerce.customer.Customer;
 import java.util.List;
 
-@RepositoryRestResource(path = "/customers")
+@RepositoryRestResource(path = "/customers",excerptProjection = InlineAddress.class)
 @RestResource
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Long> {
 

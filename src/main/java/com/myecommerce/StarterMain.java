@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 
+import com.myecommerce.account.Account;
 import com.myecommerce.address.Address;
 import com.myecommerce.customer.Customer;
 
@@ -23,7 +24,7 @@ public class StarterMain {
 
     @PostConstruct
     public void exposeIds() {
-        this.repositoryRestConfiguration.exposeIdsFor(new Class[] {Customer.class,Address.class});
+        this.repositoryRestConfiguration.exposeIdsFor(new Class[] {Customer.class,Address.class,Account.class});
     }
 
 }

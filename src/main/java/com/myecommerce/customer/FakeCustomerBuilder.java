@@ -15,12 +15,12 @@ import com.myecommerce.randomuserspapi.Result;
 import net.andreinc.mockneat.unit.id.UUIDs;
 
 
-public class FakeCustomerBuilder implements Function<Result, Customer> {
+public class FakeCustomerBuilder implements Function<Result, Account> {
 
 	private final static CreditCardSupplier CREDIT_CARD_SUPPLIER = new CreditCardSupplier();
 
 	@Override
-	public Customer apply(Result result) {
+	public Account apply(Result result) {
 
 		Customer customer = new Customer();
 		Account account = new Account(new UUIDs().supplier().get());
@@ -44,7 +44,9 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 
 		});
 
-		account.getAddresses().add(address);	
+		account.getAddresses().add(address);		
+		
+		
 
 		name.ifPresent(n -> {
 			customer.setFirstName(n.getFirst());
@@ -53,7 +55,8 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 			customer.setGender(result.getGender());
 
 		});
-		customer.setAccount(account);
+		
+		account.setCustomer(customer);
 		
 		picture.ifPresent(p->{
 			customer.setLargePictureLink(p.getLarge());
@@ -62,7 +65,7 @@ public class FakeCustomerBuilder implements Function<Result, Customer> {
 			
 		});
 
-		return customer;
+		return account;
 	}
 
 //	private void generateCreditCardData() {

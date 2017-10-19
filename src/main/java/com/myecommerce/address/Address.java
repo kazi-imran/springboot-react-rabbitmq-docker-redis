@@ -1,12 +1,20 @@
 package com.myecommerce.address;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.myecommerce.account.Account;
 import com.myecommerce.data.BaseEntity;
 
 import lombok.AllArgsConstructor;
@@ -39,6 +47,14 @@ public class Address extends BaseEntity {
 
  @Enumerated(EnumType.STRING)
  private AddressType addressType;
+ 
+ @OneToOne
+ @JoinColumn(name="account_id")
+ //@JsonBackReference
+ private Account account;
+
+ 
+ 
 
  public Address(String street1, String street2, String state, String city,
   String country, AddressType addressType, String zipCode) {
@@ -50,6 +66,14 @@ public class Address extends BaseEntity {
   this.addressType = addressType;
   this.zipCode = zipCode;
  }
+
+
+
+
+
+
+
+
 
 
 
