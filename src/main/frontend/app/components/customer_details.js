@@ -133,7 +133,7 @@ class CustomerDetails extends Component {
 
             {this.renderMetaInfo({customerInfo: this.props.customerInfo})}
 
-            <Field
+            <Field 
               name="customer.firstName"
               type="text"
               component={this.renderField}
@@ -185,7 +185,7 @@ class CustomerDetails extends Component {
                         className="form-check-input"
                         props={{
                         disabled: this.state.isDisabled
-                      }}/>{' '}
+                      }}/>{' '} fetchAddressDetails(accountLink);
                       Female
                     </label>
                   </div>
@@ -247,7 +247,6 @@ function mapStateToProps({customers}) {
     return customers[0];
   }
 
-  return
   return customers;
 
 }

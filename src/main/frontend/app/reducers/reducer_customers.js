@@ -17,14 +17,7 @@ export default function (state = {}, action) {
       return action.payload;
 
       break;
-    case FETCH_ADDRESS_DETAILS:
-      var str = JSON.stringify(action.payload, null, 2);
-      console.log("FETCH_ADDRESS_DETAILS", str);
-
-      return {
-        ...state,
-        addresses:[action.payload]
-      };
+   
 
       break;
     default:

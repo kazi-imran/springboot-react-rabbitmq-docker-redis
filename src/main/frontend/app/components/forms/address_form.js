@@ -52,7 +52,7 @@ class AddressForm extends Component {
         const {accountLink} = this.props;
         this.setState({accountLink : accountLink});
         console.log("AccountLink", this.props);       
-       fetchAddressDetails(accountLink);
+       this.props.fetchAddressDetails(accountLink);
        
        
         
