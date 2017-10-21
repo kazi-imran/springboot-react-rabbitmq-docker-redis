@@ -78,7 +78,12 @@ public class CustomerService {
 					 Set<Address> setsOfAddresses=new HashSet<>();
 					 setsOfAddresses.add(savedAddress);
 					 savedAccount.setAddresses(setsOfAddresses);				 
-				 }		 
+				 }
+				 else
+				 {
+					 savedAccount.getAddresses().add(savedAddress);
+					 
+				 }
 			 });
 			 Account savedAccountWithAddressInfo= accountRepository.save(savedAccount);
 			System.out.println(savedAccountWithAddressInfo);

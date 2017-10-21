@@ -23,13 +23,8 @@ class CustomerIndex extends Component {
      this.onNavigate = this.onNavigate.bind(this);
     this.updatePageSize = this.updatePageSize.bind(this);
     this.onDelete = this.onDelete.bind(this);
-    console.log("Inside Constructor");
-    
-    
-   // this.props.fetchCustomers(this.state.pageSize);
-
-        // this.onCreate = this.onCreate.bind(this);
-
+    console.log("Inside Constructor");    
+  
   }
 
   
@@ -110,7 +105,7 @@ onDelete(employee)
   render() {
   //  this.props.fetchCustomers(this.state.pageSize);
     console.log("Props---:", this.props);
-    // && !Array.isArray(this.props.customers.customers)
+    "I am here"
     if (_.isEmpty(this.props.customers.customers)) {
       return (
         <div>
@@ -128,30 +123,7 @@ onDelete(employee)
     }    
 
     else {
-      // var str = JSON.stringify(this.props.customers[0], null, 2)
-      // console.log(str);
-      // if(Array.isArray(this.props.customers))
-      // {
-        // console.log("I am  an array");
-        // return (
-            
-        //   <div>
-        //     <h1 />
-  
-        //     <CustomerList
-        //       customers={this.props.customers[0].customers}
-        //       attributes={this.props.customers[0].attributes}
-        //       links={this.props.customers[0].links}
-        //       page={this.props.customers[0].page}
-        //       onNavigate={this.onNavigate}
-        //       onDelete={this.onDelete}
-        //       updatePageSize={this.updatePageSize}
-        //       pageSize={this.props.pageSize}
-        //     />
-        //   </div>
-        // );
-      // }
-      // else{
+     
         console.log("I am not an array");
         return(
         <div>
@@ -172,7 +144,7 @@ onDelete(employee)
       }
       
     }
- // }
+
 }
 
 function mapStateToProps(state) {

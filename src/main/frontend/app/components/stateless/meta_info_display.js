@@ -2,11 +2,7 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 
  export const metaInfoDisplay = ({createdBy, creationTime, modifiedBy, lastModificationTime}) => {
-
-    console.log("createdBy",createdBy);
-    // class Route extends Component {
-    //     render()
-    //     {
+  
             return (
 
                 <div className="form-row">
@@ -50,7 +46,6 @@ import ReactDOM from 'react-dom';
 
             );
         }
-//     }
-// }
+
 
 export default metaInfoDisplay;

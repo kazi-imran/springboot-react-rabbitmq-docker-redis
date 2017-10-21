@@ -106,7 +106,7 @@ class CustomerDetails extends Component {
   {
     const {initialValues} = this.props;
     const allprops = this.props;
-    console.log("customerdetails props",allprops);
+    console.log("initialValues",initialValues);
     const {handleSubmit, pristine, reset, submitting} = this.props;
     var props = JSON.stringify(allprops, null, 2);
     const imageLarge = this.props.large;
@@ -185,7 +185,7 @@ class CustomerDetails extends Component {
                         className="form-check-input"
                         props={{
                         disabled: this.state.isDisabled
-                      }}/>{' '} fetchAddressDetails(accountLink);
+                      }}/>{' '} 
                       Female
                     </label>
                   </div>
@@ -227,7 +227,8 @@ class CustomerDetails extends Component {
        
         </form>
       
-        {this.renderAddressPanel({accountLink:this.props.accountLink})}
+ 
+        {this.renderAddressPanel({accountLink:this.props.accountLink,isDisabled:this.state.isDisabled})}
       
 
                       
@@ -284,7 +285,7 @@ CustomerDetails = connect(state => ({
     : ""
 }
 // pull initial values from account reducer
-), {fetchCustomerDetails,fetchAddressDetails} // bind account loading action creator
+), {fetchCustomerDetails} // bind account loading action creator
 )(CustomerDetails)
 
 export default CustomerDetails;

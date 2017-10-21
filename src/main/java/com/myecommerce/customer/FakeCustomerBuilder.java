@@ -43,8 +43,15 @@ public class FakeCustomerBuilder implements Function<Result, Account> {
 			address.setAddressType(AddressType.SHIPPING);
 
 		});
-
-		account.getAddresses().add(address);		
+		final Address address1 = new Address();
+		address1.setCity("Dhaka");
+		address1.setAddressType(AddressType.BILLING);
+		address1.setCountry("Bangladesh");
+		address1.setState("Dhaka");
+		address1.setStreet1("Shatmoshjod road");
+		account.getAddresses().add(address);
+		account.getAddresses().add(address1);
+		
 		
 		
 
