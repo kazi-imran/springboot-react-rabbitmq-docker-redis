@@ -25,6 +25,8 @@ public class StarterMain {
     @PostConstruct
     public void exposeIds() {
         this.repositoryRestConfiguration.exposeIdsFor(new Class[] {Customer.class,Address.class,Account.class});
+        this.repositoryRestConfiguration.setDefaultPageSize(10);
+        
     }
 
 }

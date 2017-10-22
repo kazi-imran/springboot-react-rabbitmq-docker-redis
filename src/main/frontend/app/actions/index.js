@@ -5,18 +5,22 @@ const follow = require('../jsfiles/follow');
 export const FETCH_CUSTOMERS = 'fetch_customers';
 export const FETCH_CUSTOMER_DETAILS = 'fetch_customer_details';
 export const FETCH_ADDRESS_DETAILS = 'fetch_address_details';
+export const FETCH_CUSTOMER_PAGE = 'fetch__customer_page';
 
 //const ROOT_URL='https://randomuser.me/api/?inc=gender,name,nat';
 
-export function fetchCustomers(pageSize) {
-  //  const request=axios.get(ROOT_URL);
+export function fetchCustomers(pageSize,page) {
+   // const request=axios.get(ROOT_URL);
+
+ // axios.get("http://localhost:8080/fakecustomers");
 
   const ROOT_URL = '/api';
   const result = follow(client, ROOT_URL, [
     {
       rel: 'customers',
       params: {
-        'size': pageSize
+        size: pageSize,
+        page:page
       }
     }
   ]).then(customerCollection => {
@@ -113,3 +117,32 @@ export function fetchAddressDetails(acountLink) {
   console.log("fetchAddressDetails result", request);
   return {type: FETCH_ADDRESS_DETAILS, payload: request};
 }
+
+export function fetchCustomerPage(navLink) {
+  
+   
+    //const request=axios.get(selfLink);
+    // client({method: 'GET', path: navLink}).done(customerCollection => {
+    //   this.setState({employees: customerCollection.entity._embedded.employees, attributes: this.state.attributes, pageSize: this.state.pageSize, links: customerCollection.entity._links})
+  
+    const request = client({
+      method: 'GET',
+      path: navLink,
+      headers: {
+        'Accept': 'application/hal+json'
+  
+      }
+    }).then(customerCollection => {
+      console.log("FETCHING CUSTOMER PAGE", customerCollection);
+      return {
+        
+        customers: customerCollection.entity._embedded.customers,        
+        page: customerCollection.entity.page,
+        links: customerCollection.entity._links
+        };
+  
+    });
+  
+    console.log("fetchCustomerDetails result", request);
+    return {type: FETCH_CUSTOMER_PAGE, payload: request};
+  }

@@ -6,7 +6,7 @@ import {Link} from 'react-router-dom';
 class Customer extends React.Component {
   constructor(props) {
     super(props);
-    console.log("props called " , this.props);
+   // console.log("props called " , this.props);
   }
 
   render() {

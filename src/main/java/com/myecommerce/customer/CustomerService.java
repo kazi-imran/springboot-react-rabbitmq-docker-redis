@@ -47,9 +47,9 @@ public class CustomerService {
 		this.accountRepository=accountRepository;
 	}
 
-	public void fetchUsersFromRandomUsersAPI() {
+	public void fetchUsersFromRandomUsersAPI(int numberOfUsers) {
 		 ResponseEntity<RandomUsersApi> movieResponseEntity = this.restTemplate.getForEntity(
-				 randomUserApi, RandomUsersApi.class);
+				 randomUserApi+"?results="+numberOfUsers, RandomUsersApi.class);
 		 List<Account> accountList=new ArrayList<>();
 		 movieResponseEntity.getBody().getResults().forEach(result->{
 			 Account account = FAKE_CUSTOMER_BUILDER.apply(result);

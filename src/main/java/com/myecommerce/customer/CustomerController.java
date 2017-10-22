@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,10 +20,10 @@ public class CustomerController {
 
 	}
 
-	@RequestMapping(value = "/fakecustomers", method = RequestMethod.GET)
-	public void getUsers() {
+	@RequestMapping(value = "/fetchrandomusers", method = RequestMethod.GET)
+	public void getUsers(@RequestParam("numberOfUsers") int numberOfUsers) {
 		log.info("getUsers");
-		userService.fetchUsersFromRandomUsersAPI();
+		userService.fetchUsersFromRandomUsersAPI(numberOfUsers);
 
 	}
 
