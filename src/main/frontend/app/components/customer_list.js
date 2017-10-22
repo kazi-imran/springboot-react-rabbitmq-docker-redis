@@ -81,7 +81,7 @@ class CustomerList extends React.Component {
     const customers = this
       .props
       .customers
-      .map(customer => <Customer key={customer.id} customer={customer}/>);
+      .map(customer => <Customer key={customer.id} customer={customer} onDelete={this.props.onDelete}/>);
     console.log("customers", customers);
     var navLinks = [];
     console.log(this.props.links);
@@ -171,9 +171,11 @@ class CustomerList extends React.Component {
           <thead>
             <tr>
 
+              <th>Id</th>
               <th>Name</th>
               <th>Email</th>
               <th>Delete</th>
+              <th>Thumbnail</th>
 
             </tr>
           </thead>

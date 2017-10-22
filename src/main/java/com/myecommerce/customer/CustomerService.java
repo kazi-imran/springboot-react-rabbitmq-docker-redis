@@ -110,5 +110,17 @@ public class CustomerService {
 		 });
 		 
 	}
+	
+	public void deleteACustomerById(long id)
+	{
+		List<Customer> customerList = customerRepository.findById(id);
+		customerList.stream().forEach(customer->{
+			Long accountId = customer.getAccount().getId();
+			accountRepository.delete(accountId);
+			
+		});
+		
+		
+	}
 
 }

@@ -21,6 +21,8 @@ public interface InlineAddress {
 	String getGender();
 	String getEmail();	
 	String getId();
+	String getThumbnailLink();
+	
 	
 	
 	@Value("#{target.account.id}")

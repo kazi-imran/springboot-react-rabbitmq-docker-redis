@@ -7,7 +7,46 @@ export const FETCH_CUSTOMER_DETAILS = 'fetch_customer_details';
 export const FETCH_ADDRESS_DETAILS = 'fetch_address_details';
 export const FETCH_CUSTOMER_PAGE = 'fetch__customer_page';
 
-//const ROOT_URL='https://randomuser.me/api/?inc=gender,name,nat';
+
+
+export function loadRandomUsers(numberOfUsers)
+{
+ var url="http://localhost:8080/customers/fetchrandomusers?numberOfUsers="+numberOfUsers;
+
+  const request = client({
+    method: 'GET',
+    path: url,
+    headers: {
+      'Accept': 'application/hal+json'
+
+    }
+  }).then(() => {
+    console.log("Loading Random Users");
+   
+
+  });
+  return {type: "", payload: request};
+}
+
+export function deleteAUser(id)
+{
+ 
+const deleteURL="http://localhost:8080/customers/delete/"+id
+  const request = client({
+    method: 'DELETE',
+    path: deleteURL,
+    headers: {
+      'Accept': 'application/hal+json'
+
+    }
+  }).then(() => {
+    console.log("Deleted A Customer");
+   
+
+  });
+  return {type: "", payload: request};
+}
+
 
 export function fetchCustomers(pageSize,page) {
    // const request=axios.get(ROOT_URL);

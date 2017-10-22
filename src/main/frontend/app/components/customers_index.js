@@ -2,7 +2,7 @@ import _ from "lodash";
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {fetchCustomers,fetchCustomerPage} from "../actions/index";
+import {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser} from "../actions/index";
 import {Grid, Row, Col, Button} from "react-bootstrap";
 import CustomerList from "./customer_list";
 const client = require("../jsfiles/client");
@@ -78,11 +78,10 @@ class CustomerIndex extends Component {
     this.props.fetchCustomerPage(navLink);
   }
 
-  onDelete(employee)
+  onDelete(customer)
   {
-    client({method: "DELETE", path: employee._links.self.href}).done(response => {
-      this.loadFromServer(this.state.pageSize);
-    });
+  this.props.deleteAUser(customer.id);
+  this.props.fetchCustomers(this.state.pageSize,this.state.page);
 
   }
 
@@ -97,7 +96,7 @@ class CustomerIndex extends Component {
   loadCustomers() {
     this
       .props
-      .fetchCustomers(this.state.pageSize,this.state.page);
+      .loadRandomUsers(50);
     this.setState({isLoading: true});
   }
 
@@ -174,4 +173,4 @@ function mapStateToProps(state) {
   return {customers: state.customers, isLoading: false};
 }
 
-export default connect(mapStateToProps, {fetchCustomers,fetchCustomerPage})(CustomerIndex);
+export default connect(mapStateToProps, {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser})(CustomerIndex);

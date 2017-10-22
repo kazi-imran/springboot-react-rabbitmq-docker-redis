@@ -42,11 +42,11 @@ public class Account extends BaseEntity {
  private String accountNumber;
  
  @OneToOne(cascade=CascadeType.ALL)
- @JoinColumn(name="customer_id",nullable=false) 
+ @JoinColumn(name="customer_id") 
  private Customer customer;
 
  // <2>
- @OneToMany( fetch = FetchType.EAGER)
+ @OneToMany( fetch = FetchType.EAGER,cascade=CascadeType.ALL)
  private Set<CreditCard> creditCards = new HashSet<>();
 
  @OneToMany( fetch = FetchType.EAGER,cascade=CascadeType.ALL)
