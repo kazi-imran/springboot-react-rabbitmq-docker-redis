@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerDetails,fetchAddressDetails} from '../actions/index';
+import {fetchCustomerDetails, updateCustomerBasicInfo, fetchAddressDetails} from '../actions/index';
 import {Link} from 'react-router-dom';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
 import MetaInfoDisplay from './stateless/meta_info_display';
@@ -16,11 +16,15 @@ class CustomerDetails extends Component {
   {
     super(props);
     this.state = {
-      isDisabled: props.isDisabled,
+      //isDisabled: props.isDisabled,
+      isDisabled: false,
       basicPanelOpen: true
 
     }
- 
+    this.onSubmit = this
+      .onSubmit
+      .bind(this);
+
   }
   componentDidMount() {
     const {id} = this.props.match.params;
@@ -31,7 +35,6 @@ class CustomerDetails extends Component {
       .fetchCustomerDetails(parseInt(id));
 
   }
- 
 
   warn(values) {
     const warnings = {}
@@ -89,24 +92,28 @@ class CustomerDetails extends Component {
   renderAddressPanel({accountLink})
   {
 
-    
+    if (accountLink.length != 0) {
+      var isEmpty = !_.isEmpty(accountLink);
+      console.log("isEmpty", isEmpty)
+      return (<AddressForm accountLink={accountLink}/>)
 
-     if(accountLink.length!=0)
-     {
-      var isEmpty=!_.isEmpty(accountLink);
-      console.log("isEmpty",isEmpty)
-      return (
-        <AddressForm accountLink={accountLink}/>
-        )
-     
-     }
-  
+    }
+
   }
+
+  onSubmit({customer}) {
+    
+    this
+      .props
+      .updateCustomerBasicInfo(customer,this.props.customerInfo._links.self.href);
+
+  }
+
   render()
   {
     const {initialValues} = this.props;
     const allprops = this.props;
-    console.log("initialValues",initialValues);
+    console.log("initialValues", initialValues);
     const {handleSubmit, pristine, reset, submitting} = this.props;
     var props = JSON.stringify(allprops, null, 2);
     const imageLarge = this.props.large;
@@ -120,7 +127,7 @@ class CustomerDetails extends Component {
 
     return (
       <div className="container">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
           <PageHeader>
             Customer Id : {this.props.customerId}
@@ -133,7 +140,7 @@ class CustomerDetails extends Component {
 
             {this.renderMetaInfo({customerInfo: this.props.customerInfo})}
 
-            <Field 
+            <Field
               name="customer.firstName"
               type="text"
               component={this.renderField}
@@ -185,7 +192,7 @@ class CustomerDetails extends Component {
                         className="form-check-input"
                         props={{
                         disabled: this.state.isDisabled
-                      }}/>{' '} 
+                      }}/>{' '}
                       Female
                     </label>
                   </div>
@@ -215,26 +222,27 @@ class CustomerDetails extends Component {
                   <div className="text-center">
                     <figure>
                       <img src={this.props.thumbnail} alt="Image medium" className="img-thumbnail"></img>
-                      <figcaption className="text-center">
-                      
-                      </figcaption>
+                      <figcaption className="text-center"></figcaption>
                     </figure>
                   </div>
                 </div>
               </div>
-            </div>
-          </Panel>
-       
-        </form>
-      
- 
-        {this.renderAddressPanel({accountLink:this.props.accountLink,isDisabled:this.state.isDisabled})}
-      
+              <div className="col-md-4"></div>
+              <div className="col-md-4 text-center">
+                <figure>
+                  <button type="submit" className="btn btn-primary text-center">Edit Form</button>
+                </figure>
+              </div>
+              <div className="col-md-4"></div>
 
-                      
-        
-        
-        
+            </div>
+
+          </Panel>
+
+        </form>
+
+        {this.renderAddressPanel({accountLink: this.props.accountLink, isDisabled: this.state.isDisabled})}
+
       </div>
     );
 
@@ -285,7 +293,7 @@ CustomerDetails = connect(state => ({
     : ""
 }
 // pull initial values from account reducer
-), {fetchCustomerDetails} // bind account loading action creator
+), {fetchCustomerDetails,updateCustomerBasicInfo} // bind account loading action creator
 )(CustomerDetails)
 
 export default CustomerDetails;

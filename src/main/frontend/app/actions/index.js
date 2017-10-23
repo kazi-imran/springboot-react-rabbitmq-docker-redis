@@ -6,6 +6,7 @@ export const FETCH_CUSTOMERS = 'fetch_customers';
 export const FETCH_CUSTOMER_DETAILS = 'fetch_customer_details';
 export const FETCH_ADDRESS_DETAILS = 'fetch_address_details';
 export const FETCH_CUSTOMER_PAGE = 'fetch__customer_page';
+export const UPDATE_CUSTOMER_BASIC_INFO = 'update_customer_basic_Info';
 
 
 
@@ -184,4 +185,30 @@ export function fetchCustomerPage(navLink) {
   
     console.log("fetchCustomerDetails result", request);
     return {type: FETCH_CUSTOMER_PAGE, payload: request};
+  }
+
+
+  export function updateCustomerBasicInfo(customer,navlink)
+  {
+
+     var str = JSON.stringify(customer, null, 2);
+     console.log("updateCustomerBasicInfo",str);
+
+    const request = client({
+      method: 'PUT',
+      path: navlink,
+      entity:customer,
+      headers: {
+        'Content-Type': 'application/json'
+  
+      }
+    }).then(updatedCustomer => {
+        console.log("updateCustomerBasicInfo", updatedCustomer);
+        return {customer: updatedCustomer.entity, links: updatedCustomer.entity.self._links};
+      
+  
+    });
+
+    console.log("updateCustomerBasicInfo", request);
+    return {type: UPDATE_CUSTOMER_BASIC_INFO, payload: request};
   }

@@ -48,7 +48,8 @@ if (TARGET === 'start' || !TARGET) {
             headers: {
                 "Access-Control-Allow-Origin": "http://localhost:9090", "Access-Control-Allow-Credentials": "true",
                 "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+                "Content-Type": "application/json"
               }
         },
         devtool: 'source-map'

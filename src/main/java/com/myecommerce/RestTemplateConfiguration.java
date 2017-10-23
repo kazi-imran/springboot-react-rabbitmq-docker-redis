@@ -2,7 +2,7 @@ package com.myecommerce;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.h2.server.web.WebServlet;
+//import org.h2.server.web.WebServlet;
 //import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -49,11 +49,11 @@ public class RestTemplateConfiguration {
 		};
 	}
 	
-	@Bean
-	public ServletRegistrationBean h2servletRegistration() {
-	    ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
-	    registration.addUrlMappings("/console/*");
-	    return registration;
-	}
+//	@Bean
+//	public ServletRegistrationBean h2servletRegistration() {
+//	    ServletRegistrationBean registration = new ServletRegistrationBean(new WebServlet());
+//	    registration.addUrlMappings("/console/*");
+//	    return registration;
+//	}
 
 }
