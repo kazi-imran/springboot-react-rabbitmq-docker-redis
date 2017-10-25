@@ -190,10 +190,10 @@ export function fetchCustomerPage(navLink) {
         'If-Match': headers.Etag
   
       }
-    }).done(response => {
+    }).then(response => {
         console.log("updateCustomerBasicInfo", response);
         return {customer: response.entity, links: response.entity.self._links,
-          headers:response.headers};
+          statusCode:response.status.code};
       
   
     });

@@ -2,9 +2,10 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchCustomerDetails, updateCustomerBasicInfo, fetchAddressDetails} from '../actions/index';
 import {Link} from 'react-router-dom';
-import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
+import {Panel, PageHeader, Table, Button, Glyphicon,Modal}  from "react-bootstrap";
 import MetaInfoDisplay from './stateless/meta_info_display';
 import AddressForm from './forms/address_form';
+
 
 import _ from "lodash";
 
@@ -19,13 +20,20 @@ class CustomerDetails extends Component {
       //isDisabled: props.isDisabled,
       isDisabled: false,
       basicPanelOpen: true,
-      statusCode:200
+      statusCode:200,
+      hasErrors:false,
+      headers:{}
 
 
     }
     this.onSubmit = this
       .onSubmit
       .bind(this);
+      this.modalInstance = this
+      .modalInstance
+      .bind(this);  
+
+     this.refreshThepage=this.refreshThepage.bind(this) ;
 
   }
   componentDidMount() {
@@ -38,6 +46,18 @@ class CustomerDetails extends Component {
 
   }
 
+  refreshThepage()
+  {
+    const {id} = this.props.match.params;
+    console.log("Inside componentDidMount");
+    console.log(this.props);
+    this
+      .props
+      .fetchCustomerDetails(parseInt(id));
+    
+  }
+  
+
   warn(values) {
     const warnings = {}
     if (values.age < 19) {
@@ -48,7 +68,7 @@ class CustomerDetails extends Component {
 
   //{ input, label, type, meta: { touched, error } }
   renderField(field) {
-    console.log("renderfield props", field)
+ 
     return (
       <div className="form-group row">
         <label className="col-sm-2 col-form-label">{field.label}</label>
@@ -95,27 +115,56 @@ class CustomerDetails extends Component {
   {
 
     if (accountLink.length != 0) {
-      var isEmpty = !_.isEmpty(accountLink);
-      console.log("isEmpty", isEmpty)
+      var isEmpty = !_.isEmpty(accountLink);      
       return (<AddressForm accountLink={accountLink}/>)
 
     }
 
   }
 
+  componentWillReceiveProps(nextProps)
+  {
+    if(!_.isEmpty(this.props.headers))
+    this.setState({headers:this.props.headers})
+    
+  }
+
   onSubmit({customer}) {
     
     this
       .props
-      .updateCustomerBasicInfo(customer,this.props.customerInfo,this.props.headers);
+      .updateCustomerBasicInfo(customer,this.props.customerInfo,this.state.headers);
 
+  }
+
+ modalInstance ()
+  {
+    return(
+    <div className="static-modal">
+      <Modal.Dialog>
+        <Modal.Header>
+          <Modal.Title>Stale Data</Modal.Title>
+        </Modal.Header>
+  
+        <Modal.Body>
+          The data u r trying to update is stale.
+        </Modal.Body>
+  
+        <Modal.Footer>
+          
+          <Button bsStyle="primary" onClick={()=>this.refreshThepage}>Ok</Button>
+        </Modal.Footer>
+  
+      </Modal.Dialog>
+    </div>
+    );
   }
 
   render()
   {
     const {initialValues} = this.props;
     const allprops = this.props;
-    console.log("initialValues", initialValues);
+    console.log("allprops", allprops);
     const {handleSubmit, pristine, reset, submitting} = this.props;
     var props = JSON.stringify(allprops, null, 2);
     const imageLarge = this.props.large;
@@ -127,13 +176,33 @@ class CustomerDetails extends Component {
     // 'customers'))    if(_.isEmpty(initialValues))     {         return
     // <div>Loading Customer details...</div>     }
 
+    if(this.props.initialValues.status)
+    {
+      if(this.props.initialValues.status.code===412)
+      {
+        return(
+          <div>
+        {this.modalInstance()}
+        </div>
+        )
+      }
+      
+
+    }
+
     return (
       <div className="container">
-        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
-          <PageHeader>
+
+         <PageHeader>
             Customer Id : {this.props.customerId}
           </PageHeader>
+
+          
+         
+        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+
+         
           {/* <Button onClick={ ()=> this.setState({ basicPanelOpen: !this.state.basicPanelOpen })}>
            <b> Basic Info</b>
           </Button> */}
@@ -230,19 +299,19 @@ class CustomerDetails extends Component {
                 </div>
               </div>
               <div className="col-md-4"></div>
+              
+              <div className="col-md-4"></div>
               <div className="col-md-4 text-center">
                 <figure>
-                  <button type="submit" className="btn btn-primary text-center">Edit Form</button>
+                  <button type="submit" className="btn btn-primary text-right"disabled={submitting}>Edit Form</button>
                 </figure>
               </div>
-              <div className="col-md-4"></div>
-
             </div>
 
           </Panel>
 
         </form>
-
+                 
         {this.renderAddressPanel({accountLink: this.props.accountLink, isDisabled: this.state.isDisabled})}
 
       </div>
@@ -271,6 +340,8 @@ CustomerDetails = reduxForm({
 CustomerDetails = connect(state => ({
 
   //Array.isArray(state.customers)?state.customers[0]:state.customers
+
+  
   initialValues: state.customers,
   customerId: !_.isEmpty(state.customers.customer)
     ? state.customers.customer.id
@@ -296,8 +367,8 @@ CustomerDetails = connect(state => ({
   headers: !_.isEmpty(state.customers.customer)
     ? state.customers.headers
     : "",
-  statusCode:!_.isEmpty(state.customers.customer)
-  ? state.customers.headers:""    
+  statusCode:!_.isEmpty(state.customers)
+  ? parseInt(state.customers.statusCode):200    
     
 }
 // pull initial values from account reducer

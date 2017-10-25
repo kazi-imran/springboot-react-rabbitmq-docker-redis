@@ -26,8 +26,7 @@ export default function (state = {}, action) {
 
       break;  
       case UPDATE_CUSTOMER_BASIC_INFO:
-      // var str = JSON.stringify(action.payload, null, 2);
-      // console.log("FETCH_CUSTOMER_DETAILS", action.payload);
+       var str = JSON.stringify(action.payload, null, 2);
       console.log("UPDATE_CUSTOMER_BASIC_INFO", action.payload);
       
       return action.payload;
