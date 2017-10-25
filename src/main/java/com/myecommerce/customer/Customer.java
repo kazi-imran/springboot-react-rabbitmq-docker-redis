@@ -7,7 +7,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.Version;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.myecommerce.account.Account;
 import com.myecommerce.data.BaseEntity;
@@ -57,6 +59,8 @@ public class Customer extends BaseEntity {
   this.gender=gender;
  }
 
+ private @Version @JsonIgnore Long version;
+ 
 public final Long getId() {
 	return id;
 }

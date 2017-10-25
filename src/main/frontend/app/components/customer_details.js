@@ -18,7 +18,9 @@ class CustomerDetails extends Component {
     this.state = {
       //isDisabled: props.isDisabled,
       isDisabled: false,
-      basicPanelOpen: true
+      basicPanelOpen: true,
+      statusCode:200
+
 
     }
     this.onSubmit = this
@@ -105,7 +107,7 @@ class CustomerDetails extends Component {
     
     this
       .props
-      .updateCustomerBasicInfo(customer,this.props.customerInfo._links.self.href);
+      .updateCustomerBasicInfo(customer,this.props.customerInfo,this.props.headers);
 
   }
 
@@ -290,7 +292,13 @@ CustomerDetails = connect(state => ({
     : "",
   accountLink: !_.isEmpty(state.customers.customer)
     ? state.customers.customer._links.account.href
-    : ""
+    : "",
+  headers: !_.isEmpty(state.customers.customer)
+    ? state.customers.headers
+    : "",
+  statusCode:!_.isEmpty(state.customers.customer)
+  ? state.customers.headers:""    
+    
 }
 // pull initial values from account reducer
 ), {fetchCustomerDetails,updateCustomerBasicInfo} // bind account loading action creator

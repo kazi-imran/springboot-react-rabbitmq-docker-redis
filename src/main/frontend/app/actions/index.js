@@ -50,9 +50,7 @@ const deleteURL="http://localhost:8080/customers/delete/"+id
 
 
 export function fetchCustomers(pageSize,page) {
-   // const request=axios.get(ROOT_URL);
 
- // axios.get("http://localhost:8080/fakecustomers");
 
   const ROOT_URL = '/api';
   const result = follow(client, ROOT_URL, [
@@ -84,19 +82,7 @@ export function fetchCustomers(pageSize,page) {
       }
 
     });
-  });
-  // .done(customerCollection => {
-  // console.log("customerCollection",customerCollection);       const request=
-  // {         customers: customerCollection.entity._embedded.customers,
-  // attributes: Object.keys(this.schema.properties),         pageSize: pageSize,
-  //        links: customerCollection.entity._links
-  //
-  //       }       console.log("request",request);       test=request;
-  // return request;    dispatch(getUsers(request));          return request;
-  // this.setState({  customers: customerCollection.entity._embedded.employees,
-  // attributes: Object.keys(this.schema.properties),    pageSize: pageSize,
-  // links: customerCollection.entity._links )}       });
-  // console.log("req1",req1);
+  }); 
 
   console.log("result", result);
 
@@ -118,7 +104,8 @@ export function fetchCustomerDetails(id) {
     }
   }).then(customerDetails => {
     console.log("client----", customerDetails);
-    return {customer: customerDetails.entity, links: customerDetails.entity._links};
+    return {customer: customerDetails.entity, links: customerDetails.entity._links,
+            headers:customerDetails.headers};
 
   });
 
@@ -188,7 +175,7 @@ export function fetchCustomerPage(navLink) {
   }
 
 
-  export function updateCustomerBasicInfo(customer,navlink)
+  export function updateCustomerBasicInfo(updatedCustomer,customer,headers)
   {
 
      var str = JSON.stringify(customer, null, 2);
@@ -196,15 +183,17 @@ export function fetchCustomerPage(navLink) {
 
     const request = client({
       method: 'PUT',
-      path: navlink,
-      entity:customer,
+      path: customer._links.self.href,
+      entity:updatedCustomer,
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'If-Match': headers.Etag
   
       }
-    }).then(updatedCustomer => {
-        console.log("updateCustomerBasicInfo", updatedCustomer);
-        return {customer: updatedCustomer.entity, links: updatedCustomer.entity.self._links};
+    }).done(response => {
+        console.log("updateCustomerBasicInfo", response);
+        return {customer: response.entity, links: response.entity.self._links,
+          headers:response.headers};
       
   
     });
@@ -212,3 +201,39 @@ export function fetchCustomerPage(navLink) {
     console.log("updateCustomerBasicInfo", request);
     return {type: UPDATE_CUSTOMER_BASIC_INFO, payload: request};
   }
+
+
+
+  // export function fetchCustomers(pageSize,page) {
+  //   const ROOT_URL = '/api';
+  //   follow(client, ROOT_URL, [
+  //     {rel: 'customers', 
+  //     params: {size: pageSize, page:page}}]
+  //   ).then(customerCollection => {
+  //     return client({
+  //       method: 'GET',
+  //       path: customerCollection.entity._links.profile.href,
+  //       headers: {'Accept': 'application/schema+json'}
+  //     }).then(schema => {
+  //       this.schema = schema.entity;
+  //       this.links = customerCollection.entity._links;
+  //       return customerCollection;
+  //     });
+  //   }).then(customerCollection => {
+  //     return customerCollection.entity._embedded.customers.map(customer =>
+  //         client({
+  //           method: 'GET',
+  //           path: customer._links.self.href
+  //         })
+  //     );
+  //   }).then(customerePromises => {
+  //     return when.all(customerePromises);
+  //   }).done(customers => {
+  //     this.setState({
+  //       customers: customers,
+  //       attributes: Object.keys(this.schema.properties),
+  //       pageSize: pageSize,
+  //       links: this.links
+  //     });
+  //   });
+  // }
