@@ -135,14 +135,26 @@ export function fetchAddressDetails(acountLink) {
         'Accept': 'application/hal+json'
       }
     })
-  }).then(addressArrays => {
-    //var str = JSON.stringify(addressArrays, null, 2)
-    console.log("addressArrays", addressArrays.entity._embedded.addresses);
-    return {addresses: addressArrays.entity._embedded.addresses}
-  });
+  }).then(addressCollection => {
+			return addressCollection.entity._embedded.addresses.map(address =>
+					client({
+						method: 'GET',
+						path: address._links.self.href
+					})
+			);
 
-  console.log("fetchAddressDetails result", request);
-  return {type: FETCH_ADDRESS_DETAILS, payload: request};
+
+   
+  }).then(addressPromises => {
+    return when.all(addressPromises);
+  }).then(addresses => {
+    console.log("addresses",addresses);
+    
+    });
+  
+  
+  
+
 }
 
 export function fetchCustomerPage(navLink) {
@@ -193,7 +205,36 @@ export function fetchCustomerPage(navLink) {
     }).then(response => {
         console.log("updateCustomerBasicInfo", response);
         return {customer: response.entity, links: response.entity.self._links,
-          statusCode:response.status.code};
+          statusCode:response.status.code,
+          headers:response.headers};
+      
+  
+    });
+
+    console.log("updateCustomerBasicInfo", request);
+    return {type: UPDATE_CUSTOMER_BASIC_INFO, payload: request};
+  }
+
+  export function updateAddressInfo(updatedAddress,address,headers)
+  {
+
+     var str = JSON.stringify(address, null, 2);
+     console.log("updateCustomerBasicInfo",str);
+
+    const request = client({
+      method: 'PUT',
+      path: address._links.self.href,
+      entity:updatedAddress,
+      headers: {
+        'Content-Type': 'application/json',
+        'If-Match': headers.Etag
+  
+      }
+    }).then(response => {
+        console.log("updateCustomerBasicInfo", response);
+        return {address: response.entity, links: response.entity.self._links,
+          statusCode:response.status.code,
+          headers:response.headers};
       
   
     });
@@ -204,36 +245,32 @@ export function fetchCustomerPage(navLink) {
 
 
 
-  // export function fetchCustomers(pageSize,page) {
-  //   const ROOT_URL = '/api';
-  //   follow(client, ROOT_URL, [
-  //     {rel: 'customers', 
-  //     params: {size: pageSize, page:page}}]
-  //   ).then(customerCollection => {
-  //     return client({
+  // export function fetchAddressDetails(acountLink) {
+    
+  //     const ROOT_URL = acountLink;
+  //     //const request=axios.get(selfLink);
+    
+  //     const request = client({
   //       method: 'GET',
-  //       path: customerCollection.entity._links.profile.href,
-  //       headers: {'Accept': 'application/schema+json'}
-  //     }).then(schema => {
-  //       this.schema = schema.entity;
-  //       this.links = customerCollection.entity._links;
-  //       return customerCollection;
+  //       path: ROOT_URL,
+  //       headers: {
+  //         'Accept': 'application/hal+json'
+    
+  //       }
+  //     }).then(accountDetails => {
+  //       var str = JSON.stringify(accountDetails, null, 2)
+  //       console.log("accountDetails", str);
+  //       return client({
+  //         method: 'GET',
+  //         path: accountDetails.entity._links.addresses.href,
+  //         headers: {
+  //           'Accept': 'application/hal+json'
+  //         }
+  //       })
+  //     }).then(addressArrays => {
+  //       //var str = JSON.stringify(addressArrays, null, 2)
+  //       console.log("addressArrays", addressArrays);
+  //       return {addresses: addressArrays.entity._embedded.addresses,
+  //         headers: addressArrays.headers,
+  //         status: addressArrays.status}
   //     });
-  //   }).then(customerCollection => {
-  //     return customerCollection.entity._embedded.customers.map(customer =>
-  //         client({
-  //           method: 'GET',
-  //           path: customer._links.self.href
-  //         })
-  //     );
-  //   }).then(customerePromises => {
-  //     return when.all(customerePromises);
-  //   }).done(customers => {
-  //     this.setState({
-  //       customers: customers,
-  //       attributes: Object.keys(this.schema.properties),
-  //       pageSize: pageSize,
-  //       links: this.links
-  //     });
-  //   });
-  // }

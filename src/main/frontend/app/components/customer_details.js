@@ -49,7 +49,7 @@ class CustomerDetails extends Component {
   refreshThepage()
   {
     const {id} = this.props.match.params;
-    console.log("Inside componentDidMount");
+    console.log("Updating stale data");
     console.log(this.props);
     this
       .props
@@ -147,12 +147,12 @@ class CustomerDetails extends Component {
         </Modal.Header>
   
         <Modal.Body>
-          The data u r trying to update is stale.
+          The data u r trying to update is stale. The latest data will be fetched
         </Modal.Body>
   
         <Modal.Footer>
           
-          <Button bsStyle="primary" onClick={()=>this.refreshThepage}>Ok</Button>
+          <Button bsStyle="primary" onClick={this.refreshThepage}>Ok</Button>
         </Modal.Footer>
   
       </Modal.Dialog>
@@ -201,11 +201,6 @@ class CustomerDetails extends Component {
           
          
         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-
-         
-          {/* <Button onClick={ ()=> this.setState({ basicPanelOpen: !this.state.basicPanelOpen })}>
-           <b> Basic Info</b>
-          </Button> */}
 
           <Panel collapsible defaultExpanded header="Basic Info" bsStyle="primary">
 
@@ -303,7 +298,7 @@ class CustomerDetails extends Component {
               <div className="col-md-4"></div>
               <div className="col-md-4 text-center">
                 <figure>
-                  <button type="submit" className="btn btn-primary text-right"disabled={submitting}>Edit Form</button>
+                  <button type="submit" className="btn btn-primary text-right"disabled={submitting}>Save</button>
                 </figure>
               </div>
             </div>
@@ -321,15 +316,6 @@ class CustomerDetails extends Component {
 
 }
 
-function mapStateToProps({customers}) {
-  console.log("mapStateToProps", customers);
-  if (Array.isArray(customers)) {
-    return customers[0];
-  }
-
-  return customers;
-
-}
 
 CustomerDetails = reduxForm({
   form: 'initializeFromState', // a unique identifier for this form

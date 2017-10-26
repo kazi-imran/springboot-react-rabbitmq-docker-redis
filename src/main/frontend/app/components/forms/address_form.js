@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {Field, reduxForm} from 'redux-form';
+import {Field, reduxForm,getFormValues} from 'redux-form';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 import MetaInfoDisplay from '../stateless/meta_info_display';
-import {fetchAddressDetails} from '../../actions/index';
+import {fetchAddressDetails,updateAddressInfo} from '../../actions/index';
 import Select from 'react-select';
-
-
 
 class AddressForm extends Component {
 
@@ -17,10 +15,35 @@ class AddressForm extends Component {
         this.state = {
             accountLink: {},
             addresses: [],
-            isDisabled: true
+            isDisabled: false
         }
 
     }
+
+    modalInstance()
+    {
+        return (
+            <div className="static-modal">
+                <Modal.Dialog>
+                    <Modal.Header>
+                        <Modal.Title>Stale Data</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        The data u r trying to update is stale. The latest data will be fetched
+                    </Modal.Body>
+
+                    <Modal.Footer>
+
+                        <Button bsStyle="primary" onClick={this.refreshThepage}>Ok</Button>
+                    </Modal.Footer>
+
+                </Modal.Dialog>
+            </div>
+        );
+    }
+
+    
 
     renderField(field) {
 
@@ -52,98 +75,126 @@ class AddressForm extends Component {
             lastModificationTime={addresses.lastModified}/>)
     }
 
-    renderAddressEditForm() {
-        console.log("all props", this.state);
+    onSubmit(values) {
+        console.log(values);
         
+        this
+          .props
+          .updateAddressInfo(address,this.props.addresses[i],this.state.headers); 
+    
+      }
+
+    renderAddressEditForm() {
+        console.log("all props", this.props);
 
         return _.map(this.props.addresses, (address, i, j) => {
-            const {handleSubmit, pristine, reset, submitting} = this.props;
+            const {handleSubmit, pristine, rgetFormValues,eset, submitting} = this.props;
             var addressSelectoptions = [
-                { value: 'BILLING', label: 'BILLING' },
-                { value: 'SHIPPING', label: 'SHIPPING' }
-              ];
+                {
+                    value: 'BILLING',
+                    label: 'BILLING'
+                }, {
+                    value: 'SHIPPING',
+                    label: 'SHIPPING'
+                }
+            ];
             var j = 0;
             return (
                 <div key={i}>
-                
+
                     <PageHeader key={++j}>
                         Address Id : {address.id}
-                                  <small><pre> {address.addressType}  ADDRESS</pre></small>
+                        <small>
+                            <pre> {address.addressType}  ADDRESS</pre>
+                        </small>
                     </PageHeader>
-                    <Panel
-                        collapsible
-                        defaultExpanded
-                        header="Address Info"
-                        bsStyle="primary"
-                        key={++j}>
+                    <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                        <Panel
+                            collapsible
+                            defaultExpanded
+                            header="Address Info"
+                            bsStyle="primary"
+                            key={++j}>
 
-                        {this.renderMetaInfo({addresses: address})}
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].country`}
-                            type="text"
-                            component={this.renderField}
-                            label="Country"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].city`}
-                            type="text"
-                            component={this.renderField}
-                            label="City"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].zipCode`}
-                            type="text"
-                            component={this.renderField}
-                            label="Zip Code"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].street1`}
-                            type="text"
-                            component={this.renderField}
-                            label="Street 1"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].street2`}
-                            type="text"
-                            component={this.renderField}
-                            label="Street 2"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <Field
-                            key={++j}
-                            name={`addresses[${i}].zipCode`}
-                            type="text"
-                            component={this.renderField}
-                            label="Zip Code"
-                            props={{
-                            isDisabled: this.state.isDisabled
-                        }}/>
-                        <div className="form-group row">
-                           <label className="col-sm-2 col-form-label">AddressType</label>
-                            <div className="col-sm-8">
-                            <Select		
-                            name="form-field-name"	
-                            value={address.addressType}
-                            options={addressSelectoptions}	
-                            disabled={this.state.isDisabled}                          			    
-				        	/>                         
+                            {this.renderMetaInfo({addresses: address})}
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].country`}
+                                type="text"
+                                component={this.renderField}
+                                label="Country"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].city`}
+                                type="text"
+                                component={this.renderField}
+                                label="City"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].zipCode`}
+                                type="text"
+                                component={this.renderField}
+                                label="Zip Code"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].street1`}
+                                type="text"
+                                component={this.renderField}
+                                label="Street 1"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].street2`}
+                                type="text"
+                                component={this.renderField}
+                                label="Street 2"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <Field
+                                key={++j}
+                                name={`addresses[${i}].zipCode`}
+                                type="text"
+                                component={this.renderField}
+                                label="Zip Code"
+                                props={{
+                                isDisabled: this.state.isDisabled
+                            }}/>
+                            <div className="form-group row">
+                                <label className="col-sm-2 col-form-label">AddressType</label>
+                                <div className="col-sm-8">
+                                    <Select
+                                        name="form-field-name"
+                                        value={address.addressType}
+                                        options={addressSelectoptions}
+                                        disabled={this.state.isDisabled}/>
+                                </div>
                             </div>
-                        </div>
-                    </Panel>
+                            <div className="col-md-4"></div>
+
+                            <div className="col-md-4"></div>
+                            <div className="col-md-4 text-center">
+                                <figure>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary text-right"
+                                        disabled={submitting}>Save</button>
+                                </figure>
+                            </div>
+
+                        </Panel>
+                    </form >
                 </div>
 
             )
@@ -196,7 +247,13 @@ AddressForm = reduxForm({
     enableReinitialize: true
 })(AddressForm)
 
-AddressForm = connect(state => ({initialValues: state.addresses, addresses: state.addresses.addresses}), {fetchAddressDetails} // bind account loading action creator
+AddressForm = connect(state =>
+     ({initialValues: state.addresses, 
+        addresses: state.addresses.addresses,
+        values: getFormValues('initializeAddressForm')(state),
+         statusCode: state.addresses.statusCode,
+          headers: state.addresses.headers}),
+ {fetchAddressDetails,updateAddressInfo} // bind account loading action creator
 )(AddressForm)
 
 export default AddressForm;
