@@ -57,7 +57,7 @@ class Customer extends React.Component {
            {<div className="text-center">
             <figure>
             <img
-          src={this.props.customer.thumbnailLink}
+          src={this.props.customer.thumbnail}
           alt="Image thumbnail"
           className="img-thumbnail"></img>
               <figcaption className="text-center"></figcaption>

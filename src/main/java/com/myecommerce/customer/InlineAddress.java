@@ -21,7 +21,9 @@ public interface InlineAddress {
 	String getGender();
 	String getEmail();	
 	String getId();
-	String getThumbnailLink();
+	String getThumbnail();
+	String getLarge();
+	String getMedium();
 	
 	
 	

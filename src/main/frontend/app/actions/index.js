@@ -1,6 +1,7 @@
 import axios from 'axios';
 const client = require('../jsfiles/client');
 const follow = require('../jsfiles/follow');
+const when = require('when');
 
 export const FETCH_CUSTOMERS = 'fetch_customers';
 export const FETCH_CUSTOMER_DETAILS = 'fetch_customer_details';
@@ -141,18 +142,18 @@ export function fetchAddressDetails(acountLink) {
 						method: 'GET',
 						path: address._links.self.href
 					})
-			);
-
-
-   
+			);  
   }).then(addressPromises => {
     return when.all(addressPromises);
   }).then(addresses => {
     console.log("addresses",addresses);
-    
+    return{
+      addresses:addresses
+    }
     });
   
-  
+    console.log("updateCustomerBasicInfo", request);
+    return {type: FETCH_ADDRESS_DETAILS, payload: request};
   
 
 }
@@ -223,24 +224,37 @@ export function fetchCustomerPage(navLink) {
 
     const request = client({
       method: 'PUT',
-      path: address._links.self.href,
-      entity:updatedAddress,
+      path: address.url,
+      entity:updatedAddress.entity,
       headers: {
         'Content-Type': 'application/json',
         'If-Match': headers.Etag
   
       }
-    }).then(response => {
+    }).then(response=> {
+      console.log("response.account.href",str);
+      return client({
+        method: 'GET',
+        path: response.entity._links.account.href
+      })
+      })
+      .then(response=> {
+        console.log("esponse.customer.href",str);
+        return client({
+          method: 'GET',
+          path: response.entity._links.customer.href
+        })
+        })           
+    .then(response => {
         console.log("updateCustomerBasicInfo", response);
-        return {address: response.entity, links: response.entity.self._links,
-          statusCode:response.status.code,
+        return {customer: response.entity, links: response.entity._links,
           headers:response.headers};
       
   
     });
 
     console.log("updateCustomerBasicInfo", request);
-    return {type: UPDATE_CUSTOMER_BASIC_INFO, payload: request};
+    return {type: FETCH_CUSTOMER_DETAILS, payload: request};
   }
 
 

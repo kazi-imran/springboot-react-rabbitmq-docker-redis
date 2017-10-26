@@ -66,9 +66,9 @@ public class FakeCustomerBuilder implements Function<Result, Account> {
 		account.setCustomer(customer);
 		
 		picture.ifPresent(p->{
-			customer.setLargePictureLink(p.getLarge());
-			customer.setMediumPictureLink(p.getMedium());
-			customer.setThumbnailLink(p.getThumbnail());
+			customer.setLarge(p.getLarge());
+			customer.setMedium(p.getMedium());
+			customer.setThumbnail(p.getThumbnail());
 			
 		});
 

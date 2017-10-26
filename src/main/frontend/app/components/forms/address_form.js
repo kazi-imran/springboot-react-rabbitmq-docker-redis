@@ -3,10 +3,11 @@ import {Field, reduxForm,getFormValues} from 'redux-form';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+
 import MetaInfoDisplay from '../stateless/meta_info_display';
 import {fetchAddressDetails,updateAddressInfo} from '../../actions/index';
 import Select from 'react-select';
-
+var deepEqual = require('deep-equal')
 class AddressForm extends Component {
 
     constructor(props)
@@ -77,10 +78,20 @@ class AddressForm extends Component {
 
     onSubmit(values) {
         console.log(values);
+        const numberOfAddressEntities=this.props.addresses.length;
+        for(var i=0;i<numberOfAddressEntities;i++)
+        {
+            if(!deepEqual(values.addresses[i], this.props.addresses[i]))
+            {
+                this
+                .props
+                .updateAddressInfo(values.addresses[i],this.props.addresses[i],this.props.addresses[i].headers); 
+                break;
+            }
+        }
+       
         
-        this
-          .props
-          .updateAddressInfo(address,this.props.addresses[i],this.state.headers); 
+        
     
       }
 
@@ -103,9 +114,9 @@ class AddressForm extends Component {
                 <div key={i}>
 
                     <PageHeader key={++j}>
-                        Address Id : {address.id}
+                        Address Id : {address.entity.id}
                         <small>
-                            <pre> {address.addressType}  ADDRESS</pre>
+                            <pre> {address.entity.addressType}  ADDRESS</pre>
                         </small>
                     </PageHeader>
                     <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -116,10 +127,10 @@ class AddressForm extends Component {
                             bsStyle="primary"
                             key={++j}>
 
-                            {this.renderMetaInfo({addresses: address})}
+                            {this.renderMetaInfo({addresses: address.entity})}
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].country`}
+                                name={`addresses[${i}].entity.country`}
                                 type="text"
                                 component={this.renderField}
                                 label="Country"
@@ -128,7 +139,7 @@ class AddressForm extends Component {
                             }}/>
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].city`}
+                                name={`addresses[${i}].entity.city`}
                                 type="text"
                                 component={this.renderField}
                                 label="City"
@@ -137,7 +148,7 @@ class AddressForm extends Component {
                             }}/>
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].zipCode`}
+                                name={`addresses[${i}].entity.zipCode`}
                                 type="text"
                                 component={this.renderField}
                                 label="Zip Code"
@@ -146,7 +157,7 @@ class AddressForm extends Component {
                             }}/>
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].street1`}
+                                name={`addresses[${i}].entity.street1`}
                                 type="text"
                                 component={this.renderField}
                                 label="Street 1"
@@ -155,7 +166,7 @@ class AddressForm extends Component {
                             }}/>
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].street2`}
+                                name={`addresses[${i}].entity.street2`}
                                 type="text"
                                 component={this.renderField}
                                 label="Street 2"
@@ -164,7 +175,7 @@ class AddressForm extends Component {
                             }}/>
                             <Field
                                 key={++j}
-                                name={`addresses[${i}].zipCode`}
+                                name={`addresses[${i}].entity.zipCode`}
                                 type="text"
                                 component={this.renderField}
                                 label="Zip Code"
@@ -176,7 +187,7 @@ class AddressForm extends Component {
                                 <div className="col-sm-8">
                                     <Select
                                         name="form-field-name"
-                                        value={address.addressType}
+                                        value={address.entity.addressType}
                                         options={addressSelectoptions}
                                         disabled={this.state.isDisabled}/>
                                 </div>

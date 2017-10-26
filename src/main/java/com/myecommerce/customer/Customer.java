@@ -40,11 +40,11 @@ public class Customer extends BaseEntity
 	private String gender;
 	
 	@JsonProperty("large")
-	private String largePictureLink;
+	private String large;
 	@JsonProperty("medium")
-	private String mediumPictureLink;
+	private String medium;
 	@JsonProperty("thumbnail")
-	private String thumbnailLink;
+	private String thumbnail;
 		
 	@OneToOne
 	@JoinColumn(name = "account_id")
@@ -115,34 +115,34 @@ public class Customer extends BaseEntity
 		this.gender = gender;
 	}
 	
-	public final String getLargePictureLink()
+	public final String getLarge()
 	{
-		return largePictureLink;
+		return large;
 	}
 	
-	public final void setLargePictureLink(String largePictureLink)
+	public final void setLarge(String large)
 	{
-		this.largePictureLink = largePictureLink;
+		this.large = large;
 	}
 	
-	public final String getMediumPictureLink()
+	public final String getMedium()
 	{
-		return mediumPictureLink;
+		return medium;
 	}
 	
-	public final void setMediumPictureLink(String mediumPictureLink)
+	public final void setMedium(String medium)
 	{
-		this.mediumPictureLink = mediumPictureLink;
+		this.medium = medium;
 	}
 	
-	public final String getThumbnailLink()
+	public final String getThumbnail()
 	{
-		return thumbnailLink;
+		return thumbnail;
 	}
 	
-	public final void setThumbnailLink(String thumbnailLink)
+	public final void setThumbnail(String thumbnail)
 	{
-		this.thumbnailLink = thumbnailLink;
+		this.thumbnail = thumbnail;
 	}
 	
 	public final Account getAccount()
