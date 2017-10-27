@@ -4,9 +4,12 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser} from "../actions/index";
 import {Grid, Row, Col, Button} from "react-bootstrap";
+import Select from 'react-select';
 import CustomerList from "./customer_list";
 const client = require("../jsfiles/client");
 const follow = require("../jsfiles/follow");
+
+
 
 class CustomerIndex extends Component {
 
@@ -20,7 +23,8 @@ class CustomerIndex extends Component {
       links: {},
       doFetchData: false,
       doReload: props.doReload,
-      isLoading: false
+      isLoading: false,
+      defaultEntryFetchSize:100
 
     }
     this.onNavigate = this
@@ -40,6 +44,7 @@ class CustomerIndex extends Component {
   }
   // getInitialState() {   return {     isLoading: false   }; }
 
+  
   componentDidMount() {
     console.log("Inside CcomponentDidMount", this.state);
 
@@ -93,16 +98,37 @@ class CustomerIndex extends Component {
       this.setState({pageSize: pageSize});
     }
   }
-  loadCustomers() {
+  loadCustomers({defaultEntryFetchSize=100}) {
     this
       .props
-      .loadRandomUsers(50);
-    this.setState({isLoading: true});
+      .loadRandomUsers(defaultEntryFetchSize);
+
+    
   }
+
+  
 
   render() {
     //  this.props.fetchCustomers(this.state.pageSize);
     console.log("Props---:", this.props);
+    var numberOfEntriesOptions = [
+      {
+        value: 50,
+        label: '50'
+      }, {
+        value: 100,
+        label: '100'
+      }, {
+        value: 150,
+        label: '150'
+      }, {
+        value: 200,
+        label: '200'
+      }, {
+        value: 300,
+        label: '300'
+      }
+    ];
 
     if (_.isEmpty(this.props.customers.customers) || !Array.isArray(this.props.customers.customers)) {
       return (
@@ -112,13 +138,11 @@ class CustomerIndex extends Component {
               <Button
                 bsStyle="primary"
                 disabled={this.props.isLoading}
-                onClick={!this.props.isLoading
-                ? this.loadCustomers
-                : null}>
-                {this.props.isLoading
-                  ? 'Loading...'
-                  : 'Load Customers'}
+                onClick={!this.props.isLoading? this.loadCustomers: null}>
+                {this.props.isLoading ? 'Loading...': 'Load Customers'}
+
               </Button>
+              <Select name="form-field-name" value={this.state.defaultEntryFetchSize} simpleValue options={numberOfEntriesOptions} onChange={this.onChange}/>
             </Col>
             <Col xs={6} md={4}>Add Customers</Col>
           </Row>
@@ -132,19 +156,22 @@ class CustomerIndex extends Component {
         <div>
           <Grid>
             <Row className="show-grid">
-              <Col xs={6} md={4}>
+              <Col xs={6} md={6}>
+              <div className="col-md-3" >
                 <Button
                   bsStyle="primary"
+                  bsSize="small"                  
                   disabled={this.props.isLoading}
-                  onClick={!this.props.isLoading
-                  ? this.loadCustomers
-                  : null}>
-                  {this.props.isLoading
-                    ? 'Loading...'
-                    : 'Load Customers'}
+                  onClick={!this.props.isLoading? this.loadCustomers: null}>
+                  {this.props.isLoading ? 'Loading...': 'Load Customers'}
                 </Button>
+                </div>
+                <div className="col-md-3">
+                <Select name="form-field-name" value={this.state.defaultEntryFetchSize}  simpleValue options={numberOfEntriesOptions} onChange={this.onChange}/>
+                </div>
+                
               </Col>
-              <Col xs={6} md={4}>Add Customers</Col>
+              <Col xs={6} md={6}>Add Customers</Col>
             </Row>
           </Grid>
           <h1/>
@@ -166,11 +193,18 @@ class CustomerIndex extends Component {
 
 }
 
+
+CustomerIndex.defaultProps = {
+  isLoading: false
+  
+}
 function mapStateToProps(state) {
   // var str = JSON.stringify(state, null, 2);
    console.log("inside customerindex mapStatetoProps", state.customers);
-  if (!_.isEmpty(state.customers) && state) {}
-  return {customers: state.customers, isLoading: false};
+  if (!_.isEmpty(state.customers) && state) {
+  
+  }
+  return {customers: state.customers, isLoading: state.isLoading};
 }
 
 export default connect(mapStateToProps, {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser})(CustomerIndex);

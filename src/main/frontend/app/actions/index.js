@@ -8,6 +8,7 @@ export const FETCH_CUSTOMER_DETAILS = 'fetch_customer_details';
 export const FETCH_ADDRESS_DETAILS = 'fetch_address_details';
 export const FETCH_CUSTOMER_PAGE = 'fetch__customer_page';
 export const UPDATE_CUSTOMER_BASIC_INFO = 'update_customer_basic_Info';
+export const LOAD_RANDOM_USERS = 'load_random_users';
 
 
 
@@ -27,7 +28,7 @@ export function loadRandomUsers(numberOfUsers)
    
 
   });
-  return {type: "", payload: request};
+  return {type:'', payload: {isLoading:false}};
 }
 
 export function deleteAUser(id)
