@@ -8,7 +8,7 @@ import MetaInfoDisplay from '../stateless/meta_info_display';
 import {fetchAddressDetails,updateAddressInfo} from '../../actions/index';
 import Select from 'react-select';
 var deepEqual = require('deep-equal')
-class AddressForm extends Component {
+class AddressDetailsForm extends Component {
 
     constructor(props)
     {
@@ -253,19 +253,19 @@ function mapStateToProps(state) {
 
 }
 
-AddressForm = reduxForm({
-    form: 'initializeAddressForm', // a unique identifier for this form
+AddressDetailsForm = reduxForm({
+    form: 'initializeAddressDetailsForm', // a unique identifier for this form
     enableReinitialize: true
-})(AddressForm)
+})(AddressDetailsForm)
 
-AddressForm = connect(state =>
+AddressDetailsForm = connect(state =>
      ({initialValues: state.addresses, 
         addresses: state.addresses.addresses,
-        values: getFormValues('initializeAddressForm')(state),
+        values: getFormValues('initializeAddressDetailsForm')(state),
          statusCode: state.addresses.statusCode,
           headers: state.addresses.headers}),
  {fetchAddressDetails,updateAddressInfo} // bind account loading action creator
-)(AddressForm)
+)(AddressDetailsForm)
 
-export default AddressForm;
-//export default connect(mapStateToProps, { fetchAddressDetails })(AddressForm);
+export default AddressDetailsForm;
+//export default connect(mapStateToProps, { fetchAddressDetails })(AddressDetailsForm);

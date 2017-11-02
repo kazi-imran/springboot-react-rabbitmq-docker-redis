@@ -4,7 +4,7 @@ import {fetchCustomerDetails, updateCustomerBasicInfo, fetchAddressDetails} from
 import {Link} from 'react-router-dom';
 import {Panel, PageHeader, Table, Button, Glyphicon,Modal}  from "react-bootstrap";
 import MetaInfoDisplay from './stateless/meta_info_display';
-import AddressForm from './forms/address_form';
+import AddressDetailsForm from './forms/address_details_form';
 
 
 import _ from "lodash";
@@ -116,7 +116,7 @@ class CustomerDetails extends Component {
 
     if (accountLink.length != 0) {
       var isEmpty = !_.isEmpty(accountLink);      
-      return (<AddressForm accountLink={accountLink}/>)
+      return (<AddressDetailsForm accountLink={accountLink}/>)
 
     }
 

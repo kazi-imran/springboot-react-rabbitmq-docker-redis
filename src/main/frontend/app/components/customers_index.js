@@ -2,14 +2,12 @@ import _ from "lodash";
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
-import {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser} from "../actions/index";
+import {fetchCustomers, fetchCustomerPage, loadRandomUsers, deleteAUser} from "../actions/index";
 import {Grid, Row, Col, Button} from "react-bootstrap";
 import Select from 'react-select';
 import CustomerList from "./customer_list";
 const client = require("../jsfiles/client");
 const follow = require("../jsfiles/follow");
-
-
 
 class CustomerIndex extends Component {
 
@@ -19,12 +17,12 @@ class CustomerIndex extends Component {
       customers: [],
       attributes: [],
       pageSize: 10,
-      page:0,
+      page: 0,
       links: {},
       doFetchData: false,
       doReload: props.doReload,
       isLoading: false,
-      defaultEntryFetchSize:100
+      defaultEntryFetchSize: 100
 
     }
     this.onNavigate = this
@@ -44,13 +42,12 @@ class CustomerIndex extends Component {
   }
   // getInitialState() {   return {     isLoading: false   }; }
 
-  
   componentDidMount() {
     console.log("Inside CcomponentDidMount", this.state);
 
     this
       .props
-      .fetchCustomers(this.state.pageSize,this.state.page);
+      .fetchCustomers(this.state.pageSize, this.state.page);
     this.setState({doReload: false});
 
   }
@@ -80,34 +77,44 @@ class CustomerIndex extends Component {
   }
 
   onNavigate(navLink) {
-    this.props.fetchCustomerPage(navLink);
+    this
+      .props
+      .fetchCustomerPage(navLink);
   }
 
   onDelete(customer)
   {
-  this.props.deleteAUser(customer.id);
-  this.props.fetchCustomers(this.state.pageSize,this.state.page);
+    this
+      .props
+      .deleteAUser(customer.id);
+    this
+      .props
+      .fetchCustomers(this.state.pageSize, this.state.page);
 
   }
 
   updatePageSize(pageSize) {
     if (pageSize !== this.state.pageSize) {
       this
-      .props
-      .fetchCustomers(parseInt(pageSize),this.state.page);
+        .props
+        .fetchCustomers(parseInt(pageSize), this.state.page);
       this.setState({pageSize: pageSize});
     }
   }
-  loadCustomers({defaultEntryFetchSize=100}) {
+  loadCustomers({
+    defaultEntryFetchSize = 100
+  }) {
     this
       .props
-      .loadRandomUsers(defaultEntryFetchSize);
+      .loadRandomUsers(this.state.defaultEntryFetchSize);
 
-    
   }
 
-  
-
+  onChange(value) {
+    this.setState({defaultEntryFetchSize:value});
+		
+		console.log('Numeric Select value changed to', value);
+	}
   render() {
     //  this.props.fetchCustomers(this.state.pageSize);
     console.log("Props---:", this.props);
@@ -134,42 +141,66 @@ class CustomerIndex extends Component {
       return (
         <Grid>
           <Row className="show-grid">
-            <Col xs={6} md={4}>
+            <Col xs={6} md={6}>
+            <div className="col-md-3">
               <Button
                 bsStyle="primary"
                 disabled={this.props.isLoading}
-                onClick={!this.props.isLoading? this.loadCustomers: null}>
-                {this.props.isLoading ? 'Loading...': 'Load Customers'}
+                onClick={!this.props.isLoading
+                ? this.loadCustomers
+                : null}>
+                {this.props.isLoading
+                  ? 'Loading...'
+                  : 'Load Customers'}
 
               </Button>
-              <Select name="form-field-name" value={this.state.defaultEntryFetchSize} simpleValue options={numberOfEntriesOptions} onChange={this.onChange}/>
+              </div>
+              <div className="col-md-3">
+              <Select
+                name="form-field-name"
+                value={this.state.defaultEntryFetchSize}
+                simpleValue
+                options={numberOfEntriesOptions}
+                onChange={value=>{
+                      this.setState({defaultEntryFetchSize:value});
+                    }}/>
+                </div>
             </Col>
             <Col xs={6} md={4}>Add Customers</Col>
           </Row>
         </Grid>
-      ) // else if(!Array.isArray(this.props.customers.customers)) {   return (
-      // <div>       <h5>Loading...</h5>     </div>   ); };
+      ) 
     } else {
-      // this.setState({isLoading: false});
-      console.log("I am not an array");
+     
       return (
         <div>
           <Grid>
             <Row className="show-grid">
               <Col xs={6} md={6}>
-              <div className="col-md-3" >
-                <Button
-                  bsStyle="primary"
-                  bsSize="small"                  
-                  disabled={this.props.isLoading}
-                  onClick={!this.props.isLoading? this.loadCustomers: null}>
-                  {this.props.isLoading ? 'Loading...': 'Load Customers'}
-                </Button>
+                <div className="col-md-3">
+                  <Button
+                    bsStyle="primary"
+                    bsSize="small"
+                    disabled={this.props.isLoading}
+                    onClick={!this.props.isLoading
+                    ? this.loadCustomers
+                    : null}>
+                    {this.props.isLoading
+                      ? 'Loading...'
+                      : 'Load Customers'}
+                  </Button>
                 </div>
                 <div className="col-md-3">
-                <Select name="form-field-name" value={this.state.defaultEntryFetchSize}  simpleValue options={numberOfEntriesOptions} onChange={this.onChange}/>
+                  <Select
+                    name="form-field-name"
+                    value={this.state.defaultEntryFetchSize}
+                    simpleValue
+                    options={numberOfEntriesOptions}
+                    onChange={value=>{
+                      this.setState({defaultEntryFetchSize:value});
+                    }}/>
                 </div>
-                
+
               </Col>
               <Col xs={6} md={6}>Add Customers</Col>
             </Row>
@@ -193,18 +224,15 @@ class CustomerIndex extends Component {
 
 }
 
-
 CustomerIndex.defaultProps = {
   isLoading: false
-  
+
 }
 function mapStateToProps(state) {
   // var str = JSON.stringify(state, null, 2);
-   console.log("inside customerindex mapStatetoProps", state.customers);
-  if (!_.isEmpty(state.customers) && state) {
-  
-  }
+  console.log("inside customerindex mapStatetoProps", state.customers);
+  if (!_.isEmpty(state.customers) && state) {}
   return {customers: state.customers, isLoading: state.isLoading};
 }
 
-export default connect(mapStateToProps, {fetchCustomers,fetchCustomerPage,loadRandomUsers,deleteAUser})(CustomerIndex);
+export default connect(mapStateToProps, {fetchCustomers, fetchCustomerPage, loadRandomUsers, deleteAUser})(CustomerIndex);

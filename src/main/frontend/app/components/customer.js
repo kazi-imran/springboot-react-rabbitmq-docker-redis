@@ -26,7 +26,7 @@ class Customer extends React.Component {
     return (
       <div className="text-center">
         <figure>
-          <img src={customer.thumbnail} alt="Image medium" className="img-thumbnail"></img>
+          <img src={customer.thumbnail} alt="Image thumbnail" className="img-thumbnail"></img>
           <figcaption className="text-center"></figcaption>
         </figure>
       </div>
