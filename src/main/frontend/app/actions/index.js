@@ -9,7 +9,31 @@ export const FETCH_ADDRESS_DETAILS = 'fetch_address_details';
 export const FETCH_CUSTOMER_PAGE = 'fetch__customer_page';
 export const UPDATE_CUSTOMER_BASIC_INFO = 'update_customer_basic_Info';
 export const LOAD_RANDOM_USERS = 'load_random_users';
+export const ADD_NEW_CUSTOMER = 'add_new_customer';
 
+
+export function addNewCustomer({customer},callback)
+{
+ var url="http://localhost:8080/customers/";
+ console.log("new customer",customer)
+
+  const request = client({
+    method: 'POST',
+    path: url,
+    entity:customer,
+    headers: {
+      'Accept': 'application/hal+json',
+      'Content-Type': 'application/json',
+      
+
+    }
+  }).then(() => {
+    callback();
+   
+
+  });
+  return {type:ADD_NEW_CUSTOMER, payload: {}};
+}
 
 
 export function loadRandomUsers(numberOfUsers)

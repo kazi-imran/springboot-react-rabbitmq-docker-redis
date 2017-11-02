@@ -166,7 +166,7 @@ class CustomerIndex extends Component {
                     }}/>
                 </div>
             </Col>
-            <Col xs={6} md={4}>Add Customers</Col>
+            <Col xs={6} md={4}><Link to='/customers/new' >Add Customers</Link></Col>
           </Row>
         </Grid>
       ) 
@@ -202,7 +202,8 @@ class CustomerIndex extends Component {
                 </div>
 
               </Col>
-              <Col xs={6} md={6}>Add Customers</Col>
+              <Col xs={6} md={6}>
+              <Link to='/customers/new' >Add Customers</Link></Col>
             </Row>
           </Grid>
           <h1/>

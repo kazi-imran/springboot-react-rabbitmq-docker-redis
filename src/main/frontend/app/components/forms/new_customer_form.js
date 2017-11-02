@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchCustomerDetails, updateCustomerBasicInfo} from '../actions/index';
+import {addNewCustomer} from '../../actions/index';
 import {Panel, PageHeader, Table, Button, Glyphicon} from "react-bootstrap";
-import MetaInfoDisplay from './stateless/meta_info_display';
+import MetaInfoDisplay from '../stateless/meta_info_display';
+import {Field, reduxForm, formValueSelector} from 'redux-form';
 class CustomerForm extends Component {
 
   constructor(props)
@@ -39,72 +40,57 @@ class CustomerForm extends Component {
       lastModificationTime={customerInfo.lastModified}/>)
   }
 
-  renderImage(imageSource, imageText)
-  {
-    return (
-      <div className="text-center">
-        <figure>
-          <img src={imageSource} alt={imageText} className="img-thumbnail"></img>
-          <figcaption className="text-center">
-            {imageText}
-          </figcaption>
-        </figure>
-      </div>
-    );
+  renderField(field) {
+    
+       return (
+         <div className="form-group row">
+           <label className="col-sm-2 col-form-label">{field.label}</label>
+           <div className="col-sm-10">
+             <input
+               {...field.input}
+               disabled={field.disabled}
+               className="form-control"
+               placeholder={field.label}
+               type={field.type}/> {/* {touched &&
+               ((error && <span>{error}</span>) ||
+                 (warning && <span>{warning}</span>))} */}
+           </div>
+         </div>
+       );
+   
+     }
+  
 
-  }
-
-  onSubmit({customer}) {
+  onSubmit(customer) {
+    console.log("Submitted Values",customer);
 
     this
       .props
-      .updateCustomerBasicInfo(customer, this.props.customerInfo, this.props.headers);
+      .addNewCustomer(customer,()=>{
+        this.props.history.push('/customers');  })
 
   }
-  renderField({
-    input,
-    label,
-    type,
-    meta: {
-      touched,
-      error,
-      warning
-    }
-  }) {
-    return (
-      <div>
-        <label>{label}</label>
-        <div>
-          <input {...input} placeholder={label} type={type}/> {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
-        </div>
-      </div>
-    );
-
-  }
+  
 
   componentDidMount() {
-    const {id} = this.props.match.params;
-    console.log("Inside componentDidMount");
-    console.log(this.props);
-    this
-      .props
-      .fetchCustomerDetails(parseInt(id));
-
+    
   }
 
   render()
   {
     const {handleSubmit, pristine, reset, submitting} = this.props;
     return (
+      <div className="container">  
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
 
         {/* <Button onClick={ ()=> this.setState({ basicPanelOpen: !this.state.basicPanelOpen })}>
            <b> Basic Info</b>
           </Button> */}
 
+
         <Panel collapsible defaultExpanded header="Basic Info" bsStyle="primary">
 
-          {this.renderMetaInfo({customerInfo: this.props.customerInfo})}
+          
 
           <Field
             name="customer.firstName"
@@ -196,7 +182,7 @@ class CustomerForm extends Component {
             <div className="col-md-4"></div>
             <div className="col-md-4 text-center">
               <figure>
-                <button type="submit" className="btn btn-primary text-center">Edit Form</button>
+                <button type="submit" className="btn btn-primary text-center">Save</button>
               </figure>
             </div>
             <div className="col-md-4"></div>
@@ -206,6 +192,7 @@ class CustomerForm extends Component {
         </Panel>
 
       </form>
+      </div>
     );
 
   }
@@ -216,5 +203,11 @@ CustomerForm = reduxForm({
   form: 'initializeFromState', // a unique identifier for this form
   enableReinitialize: true
 })(CustomerForm)
+CustomerForm = connect(state =>
+  ({
+
+  }),
+{addNewCustomer} // bind account loading action creator
+)(CustomerForm)
 //(connect(null, {createPost})
-export default reduxForm({form: 'CustomerForm'})(CustomerForm);
+export default CustomerForm;

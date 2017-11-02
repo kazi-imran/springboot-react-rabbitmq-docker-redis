@@ -24,6 +24,8 @@ import com.myecommerce.creditcard.CreditCard;
 import com.myecommerce.creditcard.CreditCardRepository;
 import com.myecommerce.randomuserspapi.RandomUsersApi;
 
+import net.andreinc.mockneat.unit.id.UUIDs;
+
 @Service
 public class CustomerService {
 	private Log log = LogFactory.getLog(getClass());
@@ -109,6 +111,19 @@ public class CustomerService {
 			 
 		 });
 		 
+	}
+	
+	public Account addACustomer(Customer customer)
+	{
+		Account account = new Account(new UUIDs().supplier().get());
+		account.setCustomer(customer);
+		Account savedAccount = accountRepository.save(account);
+		
+		Customer accountCustomer = savedAccount.getCustomer();
+		accountCustomer.setAccount(savedAccount);
+		customerRepository.save(accountCustomer);
+		return savedAccount;
+		
 	}
 	
 	public void deleteACustomerById(long id)
