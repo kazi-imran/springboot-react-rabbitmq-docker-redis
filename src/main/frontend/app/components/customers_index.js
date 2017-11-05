@@ -8,6 +8,7 @@ import Select from 'react-select';
 import CustomerList from "./customer_list";
 const client = require("../jsfiles/client");
 const follow = require("../jsfiles/follow");
+const stompClient = require('../jsfiles/websocket-listener');
 
 class CustomerIndex extends Component {
 
@@ -37,7 +38,10 @@ class CustomerIndex extends Component {
     this.loadCustomers = this
       .loadCustomers
       .bind(this);
-    console.log("Inside Constructor");
+    this.refreshCurrentPage = this
+      .refreshCurrentPage
+      .bind(this);  
+
 
   }
   // getInitialState() {   return {     isLoading: false   }; }
@@ -49,8 +53,14 @@ class CustomerIndex extends Component {
       .props
       .fetchCustomers(this.state.pageSize, this.state.page);
     this.setState({doReload: false});
+    stompClient.register([			
+			{route: '/topic/newCustomer', callback: this.refreshCurrentPage},
+			{route: '/topic/deleteCustomer', callback: this.refreshCurrentPage}
+		]);
 
   }
+  
+
   componentDidUpdate()
   {
     console.log("Inside componentDidUpdate");
@@ -114,7 +124,14 @@ class CustomerIndex extends Component {
     this.setState({defaultEntryFetchSize:value});
 		
 		console.log('Numeric Select value changed to', value);
-	}
+  }
+  
+  refreshCurrentPage()
+  {
+    this
+    .props
+    .fetchCustomers(this.state.pageSize, this.state.page);
+  }
   render() {
     //  this.props.fetchCustomers(this.state.pageSize);
     console.log("Props---:", this.props);

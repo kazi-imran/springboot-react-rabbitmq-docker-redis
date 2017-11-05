@@ -24,8 +24,9 @@ export const CustomersNavi = () => (
 
     <Switch>
       
-      <Route exact path='/customers/' component={AddPropsToRoute(CustomerIndex,{doReload:true})}/> 
       <Route exact path='/customers/new'  component={AddPropsToRoute(NewCustomerForm,{})}/>    
+      <Route exact path='/customers/' component={AddPropsToRoute(CustomerIndex,{doReload:true})}/> 
+      
       
       <Route path='/customers/:id'  component={AddPropsToRoute(CustomerDetails,{isDisabled:true})}/>  
       

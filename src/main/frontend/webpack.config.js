@@ -1,6 +1,8 @@
 const path = require('path');
 const merge = require('webpack-merge');
 
+var node_dir = __dirname + '/node_modules';
+
 const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
     source: path.join(__dirname, 'app'),
@@ -26,7 +28,10 @@ const common = {
         }]
     },
     resolve: {
-        extensions: ['*', '.js', '.jsx']
+        extensions: ['*', '.js', '.jsx'],
+        alias: {
+            'stompjs': node_dir + '/stompjs/lib/stomp.js',
+        }
     }
 };
 

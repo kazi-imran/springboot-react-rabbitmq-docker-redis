@@ -126,6 +126,11 @@ class CustomerDetails extends Component {
   {
     if(!_.isEmpty(this.props.headers))
     this.setState({headers:this.props.headers})
+    if(Array.isArray(nextProps.initialValues.customers))
+    {
+      this.refreshThepage();
+    }
+    
     
   }
 
@@ -159,6 +164,23 @@ class CustomerDetails extends Component {
     </div>
     );
   }
+
+  // shouldComponentUpdate(nextProps, nextState)
+  // {
+  //   console.log("nextState",nextState);
+  //   console.log("nextProps",nextProps);
+  //   console.log("thisprops",this.props);
+
+  //   if(Array.isArray(nextProps.initialValues.customers))
+  //   {
+  //     return false;
+  //   }
+  //   else{
+  //     return true;
+  //   }
+
+    
+  // }
 
   render()
   {
@@ -323,7 +345,10 @@ CustomerDetails = reduxForm({
 })(CustomerDetails)
 
 // You have to connect() to any reducers that you wish to connect to yourself
-CustomerDetails = connect(state => ({
+CustomerDetails = connect(state => (
+  
+  
+  {
 
   //Array.isArray(state.customers)?state.customers[0]:state.customers
 
