@@ -31,7 +31,7 @@
 		<npm.version>3.7.1</npm.version>
 		<docker.image.prefix>javakiddo</docker.image.prefix>
 
-		<!--Set to name of project-->
+		<!--Set to name of project -->
 		<docker.image.name>myecommerce</docker.image.name>
 	</properties>
 
@@ -124,6 +124,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		 <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-net</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.6.Final</version>
+        </dependency>
 		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-jpamodelgen</artifactId> 
 			</dependency> -->
 	</dependencies>
@@ -208,18 +226,18 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.20.0</version>
 				<configuration>
-				
-				<!--<dockerHost>http://127.0.0.1:2375</dockerHost>-->
-                    <dockerHost>unix:///var/run/docker.sock</dockerHost>
 
-                    <verbose>true</verbose>
+					<!--<dockerHost>http://127.0.0.1:2375</dockerHost> -->
+					<dockerHost>unix:///var/run/docker.sock</dockerHost>
+
+					<verbose>true</verbose>
 					<images>
-					<image>
+						<image>
 							<name>${docker.image.prefix}/${docker.image.name}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/dockerfile/</dockerFileDir>
 
-                                <!--copies artficact to docker build dir in target-->
+								<!--copies artficact to docker build dir in target -->
 								<assembly>
 									<descriptorRef>artifact</descriptorRef>
 								</assembly>
@@ -228,14 +246,46 @@
 									<tag>${project.version}</tag>
 								</tags>
 							</build>
-                            <run>
-                            <hostname>localhost</hostname>
-                                <ports>
-                                    <port>8080:8080</port>
-                                </ports>                                
-                            </run>
+							<run>
+								<hostname>localhost</hostname>
+								<ports>
+									<port>8080:8080</port>
+								</ports>								
+								<links>
+									<link>myrabbitmq:rabbitmq</link>
+								</links>
+								<env>
+									<SPRING_RABBITMQ_HOST>rabbitmq</SPRING_RABBITMQ_HOST>
+								</env>
+								<dependsOn>
+									<container>myrabbitmq</container>
+								</dependsOn>
+							</run>
+
+						</image>
+						<image>
+						
+							<name>rabbitmq</name>
+							<build>
+							<dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
+							</build>
+							<alias>myrabbitmq</alias>
+							<run>
+								<ports>
+									<port>15671:15671</port>
+									<port>15672:15672</port>
+									<port>15674:15674</port>
+									<port>25672:25672</port>
+									<port>4369:4369</port>
+									<port>5671:5671</port>
+									<port>61613:61613</port>
+								</ports>
+
+								<!--wait for db to start <wait> <time>10000</time> </wait> -->
+							</run>
 						</image>
 					</images>
+
 				</configuration>
 
 

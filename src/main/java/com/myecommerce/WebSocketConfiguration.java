@@ -22,7 +22,11 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 	@Override
 	@CrossOrigin
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		registry.enableSimpleBroker(MESSAGE_PREFIX);
+		registry.enableStompBrokerRelay(MESSAGE_PREFIX).		
+		setRelayHost("rabbitmq")
+        .setRelayPort(61613)
+        .setClientLogin("guest")
+        .setClientPasscode("guest");
 		registry.setApplicationDestinationPrefixes("/app");
 	}
 }
