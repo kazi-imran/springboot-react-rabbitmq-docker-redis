@@ -1,5 +1,7 @@
 package com.myecommerce.creditcard;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,23 +24,28 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity
 @ToString
-public class CreditCard extends BaseEntity {
+public class CreditCard extends BaseEntity implements Serializable {
 
- @Id
- @GeneratedValue(strategy = GenerationType.AUTO)
- private Long id;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -710402798395249920L;
 
- private String number;
- 
- @OneToOne
- @JoinColumn(name="account_id")
- private Account account;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
- @Enumerated(EnumType.STRING)
- private net.andreinc.mockneat.types.enums.CreditCardType type;
+	private String number;
 
- public CreditCard(String number, net.andreinc.mockneat.types.enums.CreditCardType type) {
-  this.number = number;
-  this.type = type;
- }
+	@OneToOne
+	@JoinColumn(name = "account_id")
+	private Account account;
+
+	@Enumerated(EnumType.STRING)
+	private net.andreinc.mockneat.types.enums.CreditCardType type;
+
+	public CreditCard(String number, net.andreinc.mockneat.types.enums.CreditCardType type) {
+		this.number = number;
+		this.type = type;
+	}
 }

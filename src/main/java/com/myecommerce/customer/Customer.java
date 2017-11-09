@@ -1,5 +1,7 @@
 package com.myecommerce.customer;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,9 +26,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 //@ToString
-public class Customer extends BaseEntity
+public class Customer extends BaseEntity implements Serializable
 {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5234963511038202262L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

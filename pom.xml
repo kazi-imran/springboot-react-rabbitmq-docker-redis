@@ -142,6 +142,10 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.6.Final</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-jpamodelgen</artifactId> 
 			</dependency> -->
 	</dependencies>
@@ -253,12 +257,16 @@
 								</ports>								
 								<links>
 									<link>myrabbitmq:rabbitmq</link>
+									<link>myredis:redis</link>
 								</links>
 								<env>
 									<SPRING_RABBITMQ_HOST>rabbitmq</SPRING_RABBITMQ_HOST>
+									<SPRING_REDIS_HOST>redis</SPRING_REDIS_HOST>
+									<SPRING_REDIS_PORT>6379</SPRING_REDIS_PORT>
 								</env>
 								<dependsOn>
 									<container>myrabbitmq</container>
+									<container>myredis</container>
 								</dependsOn>
 							</run>
 
@@ -267,7 +275,7 @@
 						
 							<name>rabbitmq</name>
 							<build>
-							<dockerFile>${project.basedir}/src/main/docker/Dockerfile</dockerFile>
+							<dockerFile>${project.basedir}/src/main/docker/RabbitMQDockerfile</dockerFile>
 							</build>
 							<alias>myrabbitmq</alias>
 							<run>
@@ -279,6 +287,21 @@
 									<port>4369:4369</port>
 									<port>5671:5671</port>
 									<port>61613:61613</port>
+								</ports>
+
+								<!--wait for db to start <wait> <time>10000</time> </wait> -->
+							</run>
+						</image>
+						<image>
+						
+							<name>redis</name>
+							<build>
+							<dockerFile>${project.basedir}/src/main/docker/RedisDockerfile</dockerFile>
+							</build>
+							<alias>myredis</alias>
+							<run>
+								<ports>
+									<port>6379:6379</port>									
 								</ports>
 
 								<!--wait for db to start <wait> <time>10000</time> </wait> -->

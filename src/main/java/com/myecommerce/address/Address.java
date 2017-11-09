@@ -1,5 +1,7 @@
 package com.myecommerce.address;
 
+import java.io.Serializable;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -29,7 +31,12 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Address extends BaseEntity {
+public class Address extends BaseEntity implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8697333243181862659L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

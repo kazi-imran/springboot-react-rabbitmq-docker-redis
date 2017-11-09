@@ -1,5 +1,6 @@
 package com.myecommerce.account;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,81 +30,84 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
-//@Data
+// @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString
-public class Account extends BaseEntity {
+// @ToString
+public class Account extends BaseEntity implements Serializable {
 
- @Id
- @GeneratedValue(strategy = GenerationType.AUTO)
- private Long id; // <1>
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7347651878317714870L;
 
- private String accountNumber;
- 
- @OneToOne(cascade=CascadeType.ALL)
- @JoinColumn(name="customer_id") 
- private Customer customer;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id; // <1>
 
- // <2>
- @OneToMany( fetch = FetchType.EAGER,cascade=CascadeType.ALL)
- private Set<CreditCard> creditCards = new HashSet<>();
+	private String accountNumber;
 
- @OneToMany( fetch = FetchType.EAGER,cascade=CascadeType.ALL)
- //@JsonManagedReference
- //@JsonBackReference
- 
- private Set<Address> addresses = new HashSet<>();
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "customer_id")
+	private Customer customer;
 
- public Account(String accountNumber, Set<Address> addresses) {
-  this.accountNumber = accountNumber;
-  this.addresses.addAll(addresses);
- }
+	// <2>
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Set<CreditCard> creditCards = new HashSet<>();
 
- public Account(String accountNumber) {
-  this.accountNumber = accountNumber;
- }
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	// @JsonManagedReference
+	// @JsonBackReference
 
-public final Long getId() {
-	return id;
-}
+	private Set<Address> addresses = new HashSet<>();
 
-public final void setId(Long id) {
-	this.id = id;
-}
+	public Account(String accountNumber, Set<Address> addresses) {
+		this.accountNumber = accountNumber;
+		this.addresses.addAll(addresses);
+	}
 
-public final String getAccountNumber() {
-	return accountNumber;
-}
+	public Account(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
-public final void setAccountNumber(String accountNumber) {
-	this.accountNumber = accountNumber;
-}
+	public final Long getId() {
+		return id;
+	}
 
-public final Customer getCustomer() {
-	return customer;
-}
+	public final void setId(Long id) {
+		this.id = id;
+	}
 
-public final void setCustomer(Customer customer) {
-	this.customer = customer;
-}
+	public final String getAccountNumber() {
+		return accountNumber;
+	}
 
-public final Set<CreditCard> getCreditCards() {
-	return creditCards;
-}
+	public final void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
-public final void setCreditCards(Set<CreditCard> creditCards) {
-	this.creditCards = creditCards;
-}
+	public final Customer getCustomer() {
+		return customer;
+	}
 
-public final Set<Address> getAddresses() {
-	return addresses;
-}
+	public final void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
-public final void setAddresses(Set<Address> addresses) {
-	this.addresses = addresses;
-}
- 
- 
- 
+	public final Set<CreditCard> getCreditCards() {
+		return creditCards;
+	}
+
+	public final void setCreditCards(Set<CreditCard> creditCards) {
+		this.creditCards = creditCards;
+	}
+
+	public final Set<Address> getAddresses() {
+		return addresses;
+	}
+
+	public final void setAddresses(Set<Address> addresses) {
+		this.addresses = addresses;
+	}
+
 }
