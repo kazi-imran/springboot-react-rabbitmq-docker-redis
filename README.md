@@ -1,22 +1,25 @@
-# Spring Boot and React starter app
+# Spring Boot CRUD Project with ReactJS Frontend in a Docker Container
+> A Modern CRUD developed with Spring Boot on the backend with ReactJS Frontend inside a Docker Container.
 
-> Starter webapp using Spring Boot on the backend and React on the frontend, with 
-Maven and Webpack as build tools, hot reloading on both sides and without xml configuration.
+    Tech Stack Used:Spring Data Rest, RabbitMQ,WebSocket, Caching, Redis Fabric8,Webpack
 
 ## Quickstart
 To run the app you just need to:
 
-    git clone https://github.com/dlizarra/spring-boot-react-webpack-starter.git ./starter
-    cd starter
-    mvn spring-boot:run
-
+    git clone https://github.com/kazi-imran/springboot-react-rabbitmq-docker-redis.git 
+    git checkout docker
+    mvn clean package docker:build
+    mvn docker:run
 To check everything is running you can:
 
     # Visit the homepage
     http://localhost:8080
     
-    # Go to the sample REST endpoint
-    http://localhost:8080/api/users
+    # Click on Customer Tab.
+    # Click on LoadCustomers.
+    # Reload the page or click on customers again.
+    
+    
     
     # Login to the H2 console (JDBC URL: 'jdbc:h2:mem:embedded', user = 'h2')
     http://localhost:8080/h2-console
