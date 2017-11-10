@@ -20,13 +20,11 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
 	// <1>
 	Optional<Customer> findByEmailContaining(String email);
 
-	List<Customer> findById(Long id);
-
-	// @Override
-	// default <S extends Customer> S findOne(Long id) {
-	// // TODO Auto-generated method stub
-	// return null;
-	// }
+	List<Customer> findById(Long id);	
+	
+	@Override
+	@CacheEvict(value = "customer", key = "#p0.id")
+	<S extends Customer> S save(S entity);
 
 	@Override
 	@Cacheable(value = "customer", key = "#p0")
@@ -34,7 +32,7 @@ public interface CustomerRepository extends PagingAndSortingRepository<Customer,
 
 	@Modifying
 	@Query("delete from Customer t where t.id = ?1")
-	@CacheEvict(value = "post-customer", key = "#p0")
+	@CacheEvict(value = "customer", key = "#p0")
 	void delete(long id);
 
 }
