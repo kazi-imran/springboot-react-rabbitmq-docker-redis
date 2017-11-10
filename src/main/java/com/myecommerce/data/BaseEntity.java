@@ -2,7 +2,6 @@ package com.myecommerce.data;
 
 
 
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 import javax.persistence.EntityListeners;
