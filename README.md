@@ -1,7 +1,6 @@
-# Spring Boot and React starter app
-
-> Starter webapp using Spring Boot on the backend and React on the frontend, with 
-Maven and Webpack as build tools, hot reloading on both sides and without xml configuration.
+# Spring Boot CRUD Project with ReactJS Frontend in a Docker Container
+> A Modern CRUD developed with Spring Boot on the backend with ReactJS Frontend inside a Docker Container.
+    Tech Stack Used:Spring Data Rest, RabbitMQ,WebSocket, Caching, Redis Fabric8,Webpack
 
 ## Quickstart
 To run the app you just need to:
