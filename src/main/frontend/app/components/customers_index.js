@@ -53,10 +53,10 @@ class CustomerIndex extends Component {
       .props
       .fetchCustomers(this.state.pageSize, this.state.page);
     this.setState({doReload: false});
-    stompClient.register([			
-			{route: '/topic/newCustomer', callback: this.refreshCurrentPage},
-			{route: '/topic/deleteCustomer', callback: this.refreshCurrentPage}
-		]);
+    // stompClient.register([			
+		// 	{route: '/topic/newCustomer', callback: this.refreshCurrentPage},
+		// 	{route: '/topic/deleteCustomer', callback: this.refreshCurrentPage}
+		// ]);
 
   }
   

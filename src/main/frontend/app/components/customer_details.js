@@ -217,7 +217,7 @@ class CustomerDetails extends Component {
 
 
          <PageHeader>
-            Customer Id : {this.props.customerId}
+            Customer Id : {this.props.customerId} <button className="back" onClick={this.props.history.goBack}>Go Back</button>
           </PageHeader>
 
           
