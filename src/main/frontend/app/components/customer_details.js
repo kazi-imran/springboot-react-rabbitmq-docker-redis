@@ -216,9 +216,20 @@ class CustomerDetails extends Component {
       <div className="container">
 
 
-         <PageHeader>
-            Customer Id : {this.props.customerId}
-          </PageHeader>
+            <div className="row">
+            <div className="col-md-4" style={{paddingLeft: 100}}>
+            <h3>Customer Id : {this.props.customerId}</h3>
+              </div>
+             
+            <div className="col-md-8 text-right" style={{paddingRight: 100, paddingTop: 20}}>
+           
+            <h4>
+            <button  className="btn-link" onClick={this.props.history.goBack}>Go Back</button>
+            </h4>
+           
+              </div>
+            </div>
+         
 
           
          
