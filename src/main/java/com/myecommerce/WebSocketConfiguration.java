@@ -1,5 +1,6 @@
 package com.myecommerce;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -12,6 +13,10 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfigurer {
 
 	public static final String MESSAGE_PREFIX = "/topic";
+	
+	@Value("${spring.rabbitmq.host}")
+	private String rabbitMQHost;
+	
 
 	@Override
 	@CrossOrigin
@@ -23,7 +28,7 @@ public class WebSocketConfiguration extends AbstractWebSocketMessageBrokerConfig
 	@CrossOrigin
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		registry.enableStompBrokerRelay(MESSAGE_PREFIX).		
-		setRelayHost("rabbitmq")
+		setRelayHost(rabbitMQHost)
         .setRelayPort(61613)
         .setClientLogin("guest")
         .setClientPasscode("guest");
