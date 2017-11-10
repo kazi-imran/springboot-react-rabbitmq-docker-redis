@@ -6,17 +6,20 @@
 ## Quickstart
 To run the app you just need to:
 
-    git clone https://github.com/dlizarra/spring-boot-react-webpack-starter.git ./starter
-    cd starter
-    mvn spring-boot:run
-
+    git clone https://github.com/kazi-imran/springboot-react-rabbitmq-docker-redis.git 
+    git checkout docker
+    mvn clean package docker:build
+    mvn docker:run
 To check everything is running you can:
 
     # Visit the homepage
     http://localhost:8080
     
-    # Go to the sample REST endpoint
-    http://localhost:8080/api/users
+    # Click on Customer Tab.
+    # Click on LoadCustomers.
+    # Reload the page or click on customers again.
+    
+    
     
     # Login to the H2 console (JDBC URL: 'jdbc:h2:mem:embedded', user = 'h2')
     http://localhost:8080/h2-console
