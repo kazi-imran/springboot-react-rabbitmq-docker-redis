@@ -28,7 +28,7 @@ When the application starts, 3 docker containers pops up:
     #2. A rabbitmq container 
     #3. A redis container
     
-`src/main/frontend`.
+It's a maven project and the docker containers are configured using [fabric8io plugin](http://projects.spring.io/spring-boot/)
 
 ### Running the backend
 Run `StarterMain` class from your IDE.
