@@ -1,5 +1,5 @@
 # Spring Boot CRUD Project with ReactJS Frontend in a Docker Container
-> A Modern CRUD developed with Spring Boot on the backend with ReactJS Frontend.It also demonstrates how to get dynamic updates through rabbitmq, and caching with redis. Everything running inside a docker container.
+> A Modern CRUD developed with Spring Boot on the backend with ReactJS Frontend.It also demonstrates how to get real time push back updates through rabbitmq,how to handle stale data with spring data rest  and caching with redis. Everything running inside  docker containers.
 
     Tech Stack Used:Spring Data Rest, RabbitMQ,WebSocket, Caching, Redis Fabric8,Webpack
 
@@ -21,8 +21,13 @@ To check everything is running you can:
     # You can also create new customers by clicking add customer
     
    
-## Start developing
-The Java code is available at `src/main/java` as usual, and the frontend files are in 
+## Docker Conatiners
+When the application starts, 3 docker containers pops up:
+    
+    #1. The application itself.(A spring boot application running on openjdk in a container)
+    #2. A rabbitmq container 
+    #3. A redis container
+    
 `src/main/frontend`.
 
 ### Running the backend
