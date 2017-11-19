@@ -29,6 +29,13 @@ When the application starts, 3 docker containers pops up:
     #3. A redis container
     
 It's a maven project and the docker containers are configured using [fabric8io plugin](https://dmp.fabric8.io/)
+When we are talking about updates in a crud app, we are talking about 3 scenarios.They are -
+
+    # When an entity is created
+    # When an entity is deleted
+    # When an entity contains stale data, and another user updates that stale entity 
+
+Push back messaging covers the first 2 scenarios, and in case of stale data update , a feature of [spring data rest](https://projects.spring.io/spring-data-rest/) has been used. Spring data rest contains built in [E-Tag conditional update ]https://spring.io/guides/tutorials/react-and-spring-data-rest/#react-and-spring-data-rest-part-3. 
 
 ### Running the backend
 Run `StarterMain` class from your IDE.
