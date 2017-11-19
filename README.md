@@ -29,11 +29,13 @@ When the application starts, 3 docker containers pops up:
     #3. A redis container
     
 It's a maven project and the docker containers are configured using [fabric8io plugin](https://dmp.fabric8.io/)
+
+## Docker Conatiners
 When we are talking about updates in a crud app, we are talking about 3 scenarios.They are -
 
-    # When an entity is created
-    # When an entity is deleted
-    # When an entity contains stale data, and another user updates that stale entity 
+    # Updating the list,When an entity is created
+    # Updating the list,When an entity is deleted
+    # Updating an entity,When an entity contains stale data, and another user updates that stale entity 
 
 Push back messaging covers the first 2 scenarios, and in case of stale data update , a feature of [spring data rest](https://projects.spring.io/spring-data-rest/) has been used. Spring data rest contains built in [E-Tag conditional update ](https://spring.io/guides/tutorials/react-and-spring-data-rest/#react-and-spring-data-rest-part-3). Basically, it acquires  optimistic lock using [javax.version](https://docs.oracle.com/javaee/5/api/javax/persistence/Version.html). Combined with that, any PUT request with header 'If-Match' and entity versioning information, Spring data rest checks if the updated information is stale, if the data is stale spring data rest sends a 412. rejecting the updated entity. In that case, we have to fetch the updated information and try updaing it again,
 
