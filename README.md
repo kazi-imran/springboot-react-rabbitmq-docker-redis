@@ -35,7 +35,7 @@ When we are talking about updates in a crud app, we are talking about 3 scenario
     # When an entity is deleted
     # When an entity contains stale data, and another user updates that stale entity 
 
-Push back messaging covers the first 2 scenarios, and in case of stale data update , a feature of [spring data rest](https://projects.spring.io/spring-data-rest/) has been used. Spring data rest contains built in [E-Tag conditional update ]https://spring.io/guides/tutorials/react-and-spring-data-rest/#react-and-spring-data-rest-part-3. 
+Push back messaging covers the first 2 scenarios, and in case of stale data update , a feature of [spring data rest](https://projects.spring.io/spring-data-rest/) has been used. Spring data rest contains built in [E-Tag conditional update ](https://spring.io/guides/tutorials/react-and-spring-data-rest/#react-and-spring-data-rest-part-3). Basically, it acquires  optimistic lock using [javax.version](https://docs.oracle.com/javaee/5/api/javax/persistence/Version.html). Combined with that, any PUT request with header 'If-Match' and entity versioning information, Spring data rest checks if the updated information is stale, if the data is stale spring data rest sends a 412. rejecting the updated entity. In that case, we have to fetch the updated information and try updaing it again,
 
 ### Running the backend
 Run `StarterMain` class from your IDE.
