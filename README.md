@@ -3,7 +3,7 @@
 
     Tech Stack Used:Spring Data Rest, RabbitMQ,WebSocket, Caching, Redis Fabric8,Webpack
 
-## Quickstart
+## Quickstart -This Doc covers the docker branch, please switch to the docker branch before reading any further.
 To run the app you just need to:
 
     git clone https://github.com/kazi-imran/springboot-react-rabbitmq-docker-redis.git 
