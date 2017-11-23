@@ -41,5 +41,9 @@ Push back messaging covers the first 2 scenarios, and in case of stale data upda
 
 
 ## Caching
-For caching we are using redis. Here we have a redis docker container 
+For caching we are using redis. Here we have a redis docker container which acts as our caching storage. Through maven config we are conntecting our spring boot container with redis container. Other than that, data is cached through Spring caching.
+
+## Frontend-React.js
+
+Most of the coding for this app is done inside the frontend part. It uses react , redux-form, react-router,websocket, webpack etc.
 
