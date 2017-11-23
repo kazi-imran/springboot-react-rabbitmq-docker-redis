@@ -1,9 +1,9 @@
 # Spring Boot CRUD Project with ReactJS Frontend in a Docker Container
-> A Modern CRUD developed with Spring Boot on the backend with ReactJS Frontend inside a Docker Container.
+> A Sampe App for modern CRUD developed with Spring Boot on the backend with ReactJS Frontend.It also demonstrates how to get real time push back updates through rabbitmq,how to handle stale data with spring data rest  and caching with redis. Everything running inside  docker containers.
 
     Tech Stack Used:Spring Data Rest, RabbitMQ,WebSocket, Caching, Redis Fabric8,Webpack
 
-## Quickstart
+## Quickstart -This Doc covers the docker branch, please switch to the docker branch before reading any further.
 To run the app you just need to:
 
     git clone https://github.com/kazi-imran/springboot-react-rabbitmq-docker-redis.git 
@@ -17,84 +17,33 @@ To check everything is running you can:
     
     # Click on Customer Tab.
     # Click on LoadCustomers.
-    # Reload the page or click on customers again.
+    # Reload the page or click on customers again 
+    # You can also create new customers by clicking add customer
     
+   
+## Docker Conatiners
+When the application starts, 3 docker containers pops up:
     
+    1. The application itself.(A spring boot application running on openjdk in a container)
+    2. A rabbitmq container 
+    3. A redis container
     
-    # Login to the H2 console (JDBC URL: 'jdbc:h2:mem:embedded', user = 'h2')
-    http://localhost:8080/h2-console
+It's a maven project and the docker containers are configured using [fabric8io plugin](https://dmp.fabric8.io/)
 
-## Start developing
-The Java code is available at `src/main/java` as usual, and the frontend files are in 
-`src/main/frontend`.
+## RabbitMQ
+When we are talking about updates in a crud app, we are talking about 3 scenarios.They are -
 
-### Running the backend
-Run `StarterMain` class from your IDE.
+    # Updating the list,when an entity is created
+    # Updating the list,when an entity is deleted
+    # Updating an entity,when an entity contains stale data, and another user updates that stale entity 
 
-### Running the frontend
-Go to `src/main/frontend` and run `npm start`. (Run `npm install` before that if it's the first time)
-
-Now we should work with `localhost:9090` (this is where we'll see our live changes reflected)
- instead of `localhost:8080`.
-
-### Hot reloading
-In the **backend** we make use of Spring DevTools to enable hot reloading, 
-so every time we make a change in our files an application restart will
-be triggered automatically.
-
-Keep in mind that Spring DevTools automatic restart only works if we run the 
-application by running the main method in our app, and not if for example we run 
-the app with maven with `mvn spring-boot:run`.
-
-In the **frontend** we use Webpack Dev Server hot module replacement 
-through the npm script `start`. Once the script is running the Dev Server will be 
-watching for any changes on our frontend files.
-
-This way we can be really productive since we don't have to worry about recompiling and deploying
-our server or client side code every time we make changes.
+Push back messaging covers the first 2 scenarios, and in case of stale data update , a feature of [spring data rest](https://projects.spring.io/spring-data-rest/) has been used. Spring data rest contains built in [E-Tag conditional update ](https://spring.io/guides/tutorials/react-and-spring-data-rest/#react-and-spring-data-rest-part-3). Basically, it acquires  optimistic lock using [javax.version](https://docs.oracle.com/javaee/5/api/javax/persistence/Version.html). Combined with that, any PUT request with header 'If-Match' and entity versioning information, Spring data rest checks if the updated information is stale, if the data is stale spring data rest sends a 412. rejecting the updated entity. In that case, we have to fetch the updated information and try updaing it again,Pretty much everything to do with stale data update is happening inside the frontend part, cause spring data rest already provides that provision out of the box. The rabbitmq container is preconfigured(see [rabbitmqdockerfile](https://github.com/kazi-imran/springboot-react-rabbitmq-docker-redis/blob/docker/src/main/docker/RabbitMQDockerfile)) with 3 plugins -rabbitmq_management,rabbitmq_stomp and rabbitmq_web_stomp.
 
 
+## Caching
+For caching we are using redis. Here we have a redis docker container which acts as our caching storage. Through maven config we are conntecting our spring boot container with redis container. Other than that, data is cached through Spring caching.
 
+## Frontend-React.js
 
-### Other ways to run the app
-#### Run everything from Maven
+Most of the coding for this app is done inside the frontend part. It uses react , redux-form, react-router,websocket, webpack etc.
 
-    mvn generate-resources spring-boot:run
-
-The Maven goal `generate-resources` will execute the frontend-maven-plugin to install Node
-and Npm the first time, run npm install to download all the libraries  that are not 
-present already and tell webpack to generate our `bundle.js`. It's the equivalent of running `npm run build` or `npm start` on a terminal.
-
-#### Run Maven and Webpack separately (no hot-reloading)
-
-    mvn spring-boot:run
-In a second terminal:
-    
-    cd src/main/frontend
-    npm run build
-
-## Tech stack and libraries
-### Backend
-- [Spring Boot](http://projects.spring.io/spring-boot/)
-- [Spring MVC](http://docs.spring.io/autorepo/docs/spring/3.2.x/spring-framework-reference/html/mvc.html)
-- [Spring Data](http://projects.spring.io/spring-data/)
-- [Spring Security](http://projects.spring.io/spring-security/)
-- [Spring Test](http://docs.spring.io/autorepo/docs/spring-framework/3.2.x/spring-framework-reference/html/testing.html)
-- [JUnit](http://junit.org/)
-- [Mockito](http://mockito.org/)
-- [AssertJ](http://joel-costigliola.github.io/assertj/)
-- [Lombok](https://projectlombok.org/)
-- [Orika](http://orika-mapper.github.io/orika-docs/)
-- [Maven](https://maven.apache.org/)
-
-### Frontend
-- [Node](https://nodejs.org/en/)
-- [React](https://facebook.github.io/react/)
-- [Redux](http://redux.js.org/)
-- [Webpack](https://webpack.github.io/)
-- [Axios](https://github.com/mzabriskie/axios)
-- [Babel](https://babeljs.io/)
-- [ES6](http://www.ecma-international.org/ecma-262/6.0/)
-- [ESLint](http://eslint.org/)
-
----
