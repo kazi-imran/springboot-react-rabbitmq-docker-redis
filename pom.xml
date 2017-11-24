@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.dlizarra</groupId>
-	<artifactId>starter</artifactId>
+	<groupId>com.kiaziz</groupId>
+	<artifactId>customermanagement</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>MyEcommerce</name>
+	<name>Customer Service</name>
 	<description>Spring Boot and React Project</description>
 
 	<parent>
@@ -29,6 +29,10 @@
 		<frontend-plugin.version>0.0.27</frontend-plugin.version>
 		<node.version>v5.7.0</node.version>
 		<npm.version>3.7.1</npm.version>
+		<docker.image.prefix>javakiddo</docker.image.prefix>
+
+		<!--Set to name of project -->
+		<docker.image.name>myecommerce</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -64,16 +68,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<!-- <dependency> <groupId>com.zaxxer</groupId> <artifactId>HikariCP</artifactId> 
-			</dependency> -->
-		<!-- Other -->
-		<dependency>
-			<groupId>ma.glasnost.orika</groupId>
-			<artifactId>orika-core</artifactId>
-			<version>${orika-core.version}</version>
-		</dependency>
+		</dependency>		
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -120,6 +115,28 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-amqp</artifactId>
+		</dependency>
+		 <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+            
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-net</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.6.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 		<!-- <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-jpamodelgen</artifactId> 
 			</dependency> -->
 	</dependencies>
@@ -198,6 +215,121 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.20.0</version>
+				<configuration>
+
+					<!--<dockerHost>http://127.0.0.1:2375</dockerHost> -->
+					<dockerHost>unix:///var/run/docker.sock</dockerHost>
+
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+								<dockerFileDir>${project.basedir}/target/dockerfile/</dockerFileDir>
+
+								<!--copies artficact to docker build dir in target -->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+							<run>
+								<hostname>localhost</hostname>
+								<ports>
+									<port>8080:8080</port>
+								</ports>								
+								<links>
+									<link>myrabbitmq:rabbitmq</link>
+									<link>myredis:redis</link>
+								</links>
+								<env>
+									<SPRING_RABBITMQ_HOST>rabbitmq</SPRING_RABBITMQ_HOST>
+									<SPRING_REDIS_HOST>redis</SPRING_REDIS_HOST>
+									<SPRING_REDIS_PORT>6379</SPRING_REDIS_PORT>
+								</env>
+								<dependsOn>
+									<container>myrabbitmq</container>
+									<container>myredis</container>
+								</dependsOn>
+							</run>
+
+						</image>
+						<image>
+						
+							<name>rabbitmq</name>
+							<build>
+							<dockerFile>${project.basedir}/src/main/docker/RabbitMQDockerfile</dockerFile>
+							</build>
+							<alias>myrabbitmq</alias>
+							<run>
+								<ports>
+									<port>15671:15671</port>
+									<port>15672:15672</port>
+									<port>15674:15674</port>
+									<port>25672:25672</port>
+									<port>4369:4369</port>
+									<port>5671:5671</port>
+									<port>61613:61613</port>
+								</ports>
+
+								<!--wait for db to start <wait> <time>10000</time> </wait> -->
+							</run>
+						</image>
+						<image>
+						
+							<name>redis</name>
+							<build>
+							<dockerFile>${project.basedir}/src/main/docker/RedisDockerfile</dockerFile>
+							</build>
+							<alias>myredis</alias>
+							<run>
+								<ports>
+									<port>6379:6379</port>									
+								</ports>
+
+								<!--wait for db to start <wait> <time>10000</time> </wait> -->
+							</run>
+						</image>
+					</images>
+
+				</configuration>
+
+
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<scripts>
+						<script>file:///${project.basedir}/src/main/scripts/BuildDockerfile.groovy</script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<!-- any version of Groovy \>= 1.5.0 should work here -->
+						<version>2.4.8</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
